@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Invitación XV Años</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;width:100%;height:100%;font-family:Arial,sans-serif;background:#000}
+  #cover{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+         background:linear-gradient(135deg,#160b16,#3b1736,#120812);z-index:10}
+  .box{text-align:center;color:white;padding:30px}
+  .box h1{font-size:clamp(28px,8vw,48px);margin:0 0 12px}
+  .box p{font-size:18px;margin:0 0 28px}
+  button{border:0;border-radius:999px;padding:16px 34px;font-size:18px;font-weight:bold;
+         background:white;color:#4b1747;cursor:pointer;box-shadow:0 8px 30px #0008}
+  #invitation{display:none;width:100%;min-height:100%;background:#fff}
+  #invitation iframe{display:block;width:100%;height:100vh;border:0}
+  .note{position:fixed;bottom:10px;left:0;right:0;text-align:center;color:#fff8;font-size:11px}
+</style>
+</head>
+<body>
+<section id="cover">
+  <div class="box">
+    <h1>XV Años</h1>
+    <p>Dayra Lissette</p>
+    <button id="openBtn">ABRIR INVITACIÓN</button>
+    <div class="note">Toca el botón para comenzar la música</div>
+  </div>
+</section>
+
+<section id="invitation">
+  <!-- Reemplaza https://canva.link/6b5y42pwydzon6y con el enlace de tu invitación de Canva -->
+  <iframe id="canvaFrame" src="https://canva.link/6b5y42pwydzon6y" allow="fullscreen"></iframe>
+</section>
+
+<audio id="music" preload="auto" loop>
+  <source src="quince-anos.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const btn = document.getElementById('openBtn');
+const music = document.getElementById('music');
+const cover = document.getElementById('cover');
+const invitation = document.getElementById('invitation');
+
+btn.addEventListener('click', async () => {
+  try { await music.play(); } catch(e) {}
+  cover.style.display = 'none';
+  invitation.style.display = 'block';
+});
+</script>
+</body>
+</html>
