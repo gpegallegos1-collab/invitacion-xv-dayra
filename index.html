@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>XV Dayra Lissette</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#eee7f4}
+.portada{
+  position:relative;
+  width:100%;
+  height:100svh;
+  background:url("portada.png") center center/cover no-repeat;
+}
+.boton-abrir{
+  position:absolute !important;
+  top:50% !important;
+  left:50% !important;
+  transform:translate(-50%,-50%) !important;
+  z-index:10;
+  width:min(76vw,330px);
+  min-height:60px;
+  padding:0 24px;
+  border:2px solid rgba(255,255,255,.95);
+  border-radius:50px;
+  background:linear-gradient(135deg,#624176,#a979bb,#6b467d);
+  color:#fff;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:19px;
+  font-weight:bold;
+  letter-spacing:1px;
+  cursor:pointer;
+  box-shadow:0 8px 25px rgba(40,15,50,.55),0 0 20px rgba(255,255,255,.45);
+  animation:brillo 2.5s ease-in-out infinite;
+}
+.boton-abrir:active{
+  transform:translate(-50%,-50%) scale(.95) !important;
+}
+@keyframes brillo{
+  0%,100%{box-shadow:0 8px 25px rgba(40,15,50,.55),0 0 15px rgba(255,255,255,.35)}
+  50%{box-shadow:0 8px 30px rgba(40,15,50,.65),0 0 30px rgba(255,255,255,.75)}
+}
+.mensaje-musica{
+  position:absolute;
+  z-index:10;
+  left:0;
+  right:0;
+  bottom:20px;
+  text-align:center;
+  color:#fff;
+  font:12px Arial,sans-serif;
+  text-shadow:0 2px 5px rgba(0,0,0,.8);
+}
+</style>
+</head>
+<body>
+<section class="portada">
+  <button class="boton-abrir" id="botonAbrir">💜 ABRIR INVITACIÓN</button>
+  <div class="mensaje-musica" id="mensajeMusica">🎵 Toca para comenzar la música</div>
+</section>
+
+<audio id="musica" preload="auto" loop>
+  <source src="quince-anos.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+document.getElementById("botonAbrir").addEventListener("click", async function(){
+  const musica=document.getElementById("musica");
+  const mensaje=document.getElementById("mensajeMusica");
+  try{
+    await musica.play();
+    mensaje.textContent="♪ Reproduciendo · Quince Años";
+  }catch(e){
+    mensaje.textContent="🎵 Toca nuevamente para reproducir";
+  }
+});
+</script>
+</body>
+</html>
