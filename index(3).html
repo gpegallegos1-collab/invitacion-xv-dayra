@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>XV Dayra Lissette</title>
+  <style>
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#000}
+    .portada{
+      position:relative;width:100%;height:100svh;
+      background:url("portada.png") center/cover no-repeat;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .portada::after{
+      content:"";position:absolute;inset:0;
+      background:rgba(40,20,50,.08);pointer-events:none;
+    }
+    .boton-abrir{
+      position:relative;z-index:5;
+      width:min(75vw,330px);min-height:60px;
+      border:2px solid rgba(255,255,255,.9);
+      border-radius:50px;
+      background:linear-gradient(135deg,#624176,#a979bb,#6b467d);
+      color:#fff;font-family:Georgia,"Times New Roman",serif;
+      font-size:19px;font-weight:bold;letter-spacing:1px;
+      cursor:pointer;
+      box-shadow:0 8px 25px rgba(40,15,50,.55),0 0 20px rgba(255,255,255,.45);
+      transition:transform .2s ease;
+      animation:brillo 2.5s infinite;
+    }
+    .boton-abrir:active{transform:scale(.95)}
+    @keyframes brillo{
+      0%,100%{box-shadow:0 8px 25px rgba(40,15,50,.55),0 0 15px rgba(255,255,255,.35)}
+      50%{box-shadow:0 8px 30px rgba(40,15,50,.65),0 0 30px rgba(255,255,255,.75)}
+    }
+    .mensaje-musica{
+      position:absolute;z-index:5;bottom:25px;width:100%;
+      text-align:center;color:#fff;font:12px Arial,sans-serif;
+      text-shadow:0 2px 5px rgba(0,0,0,.8);
+    }
+  </style>
+</head>
+<body>
+  <section class="portada">
+    <button class="boton-abrir" id="botonAbrir">💜 ABRIR INVITACIÓN</button>
+    <div class="mensaje-musica" id="mensajeMusica">🎵 Toca para comenzar la música</div>
+  </section>
+
+  <audio id="musica" preload="auto" loop>
+    <source src="quince-anos.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const boton=document.getElementById("botonAbrir");
+    const musica=document.getElementById("musica");
+    const mensaje=document.getElementById("mensajeMusica");
+
+    boton.addEventListener("click",async function(){
+      try{
+        await musica.play();
+        mensaje.innerHTML="♪ Reproduciendo · Quince Años";
+      }catch(error){
+        mensaje.innerHTML="🎵 Toca nuevamente para reproducir";
+      }
+      // Aquí agregaremos la segunda pantalla.
+    });
+  </script>
+</body>
+</html>
