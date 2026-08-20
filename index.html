@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>XV Dayra Lissette</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#12051d}
+.portada{position:relative;width:100%;height:100svh;background:#12051d}
+.portada img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+
+/* BOTÓN INVISIBLE: centrado exactamente sobre la mariposa */
+.boton-real{
+ position:absolute;
+ z-index:10;
+ left:50%;
+ top:50%;
+ transform:translate(-50%,-50%);
+ width:min(27vw,145px);
+ aspect-ratio:1/1;
+ border:0;
+ border-radius:50%;
+ background:transparent;
+ cursor:pointer;
+ -webkit-tap-highlight-color:transparent;
+}
+.boton-real:active{transform:translate(-50%,-50%) scale(.94)}
+.mensaje{
+ position:absolute;z-index:11;left:50%;bottom:14px;
+ transform:translateX(-50%);color:#fff;font:12px Arial,sans-serif;
+ text-align:center;text-shadow:0 2px 6px #000;pointer-events:none;
+}
+</style>
+</head>
+<body>
+<section class="portada">
+<img src="portada.png" alt="Invitación XV Dayra Lissette">
+<button class="boton-real" id="abrir" aria-label="Abrir invitación"></button>
+<div class="mensaje" id="mensaje">Toca “ABRIR INVITACIÓN”</div>
+</section>
+
+<audio id="musica" preload="auto" loop>
+<source src="quince-anos.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+document.getElementById("abrir").addEventListener("click",async()=>{
+ const musica=document.getElementById("musica");
+ const mensaje=document.getElementById("mensaje");
+ try{
+   await musica.play();
+   mensaje.textContent="♪ Reproduciendo · Quince Años";
+ }catch(e){
+   mensaje.textContent="Toca nuevamente para reproducir";
+ }
+});
+</script>
+</body>
+</html>
