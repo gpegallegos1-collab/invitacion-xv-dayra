@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>XV Dayra Lissette</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;min-height:100%;background:#eee7f4}
+body{font-family:Georgia,"Times New Roman",serif}
+.portada{
+  position:relative; min-height:100svh; width:100%;
+  display:flex; align-items:flex-end; justify-content:center;
+  background:url("portada.png") center/cover no-repeat;
+  overflow:hidden;
+}
+.portada:after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 58%,rgba(42,20,52,.08) 68%,rgba(30,12,40,.55) 100%);
+  pointer-events:none;
+}
+.abrir{
+  position:relative;z-index:2;
+  margin:0 0 7vh;
+  width:min(82vw,360px);min-height:62px;
+  border:1px solid #fff;border-radius:40px;
+  background:linear-gradient(135deg,#6d4a82,#a982b9,#654675);
+  color:#fff;
+  font:700 18px Arial,sans-serif;
+  letter-spacing:1px;
+  box-shadow:0 8px 28px rgba(46,20,57,.5),0 0 18px rgba(255,255,255,.5);
+  cursor:pointer;
+  animation:pulse 2.2s ease-in-out infinite;
+}
+@keyframes pulse{50%{transform:scale(1.025);box-shadow:0 10px 34px rgba(46,20,57,.6),0 0 25px rgba(255,255,255,.7)}}
+#mensaje{
+  position:fixed;left:0;right:0;bottom:18px;z-index:3;text-align:center;
+  color:#fff;font:12px Arial,sans-serif;text-shadow:0 1px 5px #29172f;
+}
+@media (min-width:700px){
+  .portada{max-width:600px;margin:auto}
+}
+</style>
+</head>
+<body>
+<section class="portada">
+  <button class="abrir" id="abrir">💜 ABRIR INVITACIÓN</button>
+</section>
+
+<audio id="musica" preload="auto" loop>
+  <source src="quince-anos.mp3" type="audio/mpeg">
+</audio>
+<div id="mensaje"></div>
+
+<script>
+document.getElementById("abrir").addEventListener("click", async () => {
+  const audio = document.getElementById("musica");
+  try {
+    await audio.play();
+    document.getElementById("mensaje").textContent = "♪ Reproduciendo • Quince Años";
+  } catch(e) {
+    document.getElementById("mensaje").textContent = "Toca nuevamente para reproducir la música";
+  }
+  // La siguiente pantalla se agregará aquí.
+});
+</script>
+</body>
+</html>
