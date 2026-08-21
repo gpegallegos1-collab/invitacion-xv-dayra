@@ -26,29 +26,6 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 #photo img{width:100%;height:100%;object-fit:contain;object-position:center}
 #videoWrap{position:absolute;inset:0;width:100%;height:100%;display:none;align-items:center;justify-content:center;background:#000;z-index:3}
 #video{width:100%;height:100%;display:block;object-fit:cover;object-position:center;background:#000}
-#siguiente{
- position:absolute;
- z-index:10;
- left:50%;
- bottom:5%;
- transform:translateX(-50%);
- border:1px solid rgba(255,255,255,.8);
- border-radius:999px;
- padding:12px 28px;
- min-width:130px;
- background:rgba(50,20,70,.78);
- color:#fff;
- font-family:Georgia,"Times New Roman",serif;
- font-size:17px;
- letter-spacing:1px;
- cursor:pointer;
- box-shadow:0 4px 18px rgba(0,0,0,.35);
-}
-#siguiente:active{transform:translateX(-50%) scale(.97)}
-@media(max-width:600px){
- #siguiente{bottom:4%;font-size:15px;padding:11px 25px;min-width:120px}
-}
-
 
 /* En pantallas horizontales se muestra el video completo */
 @media (min-aspect-ratio:1/1){
@@ -75,7 +52,31 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
  .label{letter-spacing:2px;font-size:12px}
  .units{gap:3px}.num{font-size:clamp(24px,8vw,42px)}
  .unit{font-size:9px;letter-spacing:.3px}
+} 
+#siguiente3{
+ position:absolute;
+ z-index:10;
+ left:50%;
+ bottom:4%;
+ transform:translateX(-50%);
+ display:block;
+ border:1px solid rgba(255,255,255,.9);
+ border-radius:999px;
+ padding:11px 28px;
+ min-width:130px;
+ background:rgba(75,35,95,.92);
+ color:#fff;
+ font-family:Arial,sans-serif;
+ font-size:16px;
+ font-weight:700;
+ letter-spacing:1px;
+ cursor:pointer;
+ box-shadow:0 4px 18px rgba(0,0,0,.4);
 }
+@media(max-width:700px){
+ #siguiente3{bottom:3%;font-size:15px;padding:10px 25px;min-width:120px}
+}
+
 </style>
 </head>
 <body>
@@ -93,7 +94,6 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 <!-- SLIDE 2 -->
 <section id="slide2" class="slide">
  <div id="photo"><img src="foto-transicion.jpg" alt=""></div>
- <button id="siguiente" type="button" aria-label="Ir a la siguiente pantalla">Siguiente</button>
  <div id="videoWrap">
   <video id="video" playsinline preload="auto">
    <source src="video-segunda.mp4" type="video/mp4">
@@ -114,6 +114,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
    <div><div id="seconds" class="num">00</div><div class="unit">SEGUNDOS</div></div>
   </div>
  </section>
+ <button id="siguiente3" type="button" aria-label="Siguiente">Siguiente</button>
 </section>
 
 <audio id="music" preload="auto" loop>
@@ -128,18 +129,17 @@ const photo=document.getElementById('photo');
 const videoWrap=document.getElementById('videoWrap');
 const video=document.getElementById('video');
 const open=document.getElementById('open');
-const siguiente=document.getElementById('siguiente');
 const music=document.getElementById('music');
 
 let started=false;
-let slide3Shown=false;
 
-function show(el){ el.classList.add('active'); }
-function hide(el){ el.classList.remove('active'); }
+function show(el){el.classList.add('active')}
+function hide(el){el.classList.remove('active')}
 
 function updateCountdown(){
  const target=new Date(2026,9,17,0,0,0).getTime();
- let diff=Math.max(0,target-Date.now());
+ let diff=target-Date.now();
+ if(diff<0) diff=0;
  const d=Math.floor(diff/86400000); diff%=86400000;
  const h=Math.floor(diff/3600000); diff%=3600000;
  const m=Math.floor(diff/60000); diff%=60000;
@@ -152,17 +152,6 @@ function updateCountdown(){
 updateCountdown();
 setInterval(updateCountdown,1000);
 
-function goToSlide3(){
- if(slide3Shown)return;
- slide3Shown=true;
- video.pause();
- videoWrap.style.display='none';
- photo.style.display='none';
- hide(s2);
- show(s3);
- updateCountdown();
-}
-
 function openInvitation(){
  if(started)return;
  started=true;
@@ -170,11 +159,11 @@ function openInvitation(){
  s1.classList.add('opening');
 
  setTimeout(()=>{
-   hide(s1);
-   show(s2);
+   hide(s1); show(s2);
    photo.style.display='flex';
  },1350);
 
+ // Foto: 8 segundos
  setTimeout(()=>{
    photo.style.display='none';
    videoWrap.style.display='flex';
@@ -184,15 +173,17 @@ function openInvitation(){
  },9350);
 }
 
-open.addEventListener('click',openInvitation);
-siguiente.addEventListener('click',goToSlide3);
-
-video.addEventListener('ended',goToSlide3);
-video.addEventListener('timeupdate',()=>{
- if(video.duration && video.currentTime >= video.duration-0.2){
-   goToSlide3();
- }
+video.addEventListener('ended',()=>{
+ videoWrap.style.display='none';
+ hide(s2);
+ show(s3);
+ updateCountdown();
 });
+
+open.addEventListener('click',openInvitation);
+open.addEventListener('touchend',e=>{
+ e.preventDefault(); openInvitation();
+},{passive:false});
 </script>
 </body>
 </html>
