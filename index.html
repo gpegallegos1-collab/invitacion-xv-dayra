@@ -47,6 +47,13 @@ font-weight:700;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 18px rgba(0,0
  .num{font-size:clamp(24px,8vw,42px)}.unit{font-size:9px}
  .nav{bottom:3%;font-size:15px;padding:10px 25px;min-width:120px}
 }
+#slide4{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;overflow:hidden!important;background:#1d1030!important}
+#slide4 .bg{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important}
+.live-counter{position:absolute!important;left:50%!important;bottom:86px!important;top:auto!important;transform:translateX(-50%)!important;width:min(72vw,320px)!important;min-width:245px!important;padding:7px 8px 5px!important;border-radius:14px!important;z-index:20!important}
+.live-title{font-size:9px!important;letter-spacing:2px!important}
+.live-num{font-size:23px!important}
+.live-unit{font-size:7px!important}
+#next4{position:absolute!important;left:50%!important;bottom:12px!important;transform:translateX(-50%)!important;z-index:30!important}
 </style>
 </head>
 <body>
@@ -71,16 +78,18 @@ font-weight:700;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 18px rgba(0,0
 </section>
 
 <section id="slide4" class="slide">
- <img class="bg" src="slide4-contador.png" alt="">
- <section class="countdown">
-  <div class="label">FALTAN</div>
-  <div class="units">
-   <div><div id="days" class="num">00</div><div class="unit">DÍAS</div></div>
-   <div><div id="hours" class="num">00</div><div class="unit">HORAS</div></div>
-   <div><div id="minutes" class="num">00</div><div class="unit">MINUTOS</div></div>
-   <div><div id="seconds" class="num">00</div><div class="unit">SEGUNDOS</div></div>
+  <img class="bg" src="slide4-contador.png" alt="">
+  <div class="live-counter">
+    <div class="live-title">FALTAN</div>
+    <div class="live-grid">
+      <div><div id="days" class="live-num">00</div><div class="live-unit">DÍAS</div></div>
+      <div><div id="hours" class="live-num">00</div><div class="live-unit">HORAS</div></div>
+      <div><div id="minutes" class="live-num">00</div><div class="live-unit">MINUTOS</div></div>
+      <div><div id="seconds" class="live-num">00</div><div class="live-unit">SEGUNDOS</div></div>
+    </div>
   </div>
- </section>
+  <button id="next4" class="nav" type="button">Siguiente</button>
+</section>
  <button id="next4" class="nav" type="button">Siguiente</button>
 </section>
 
