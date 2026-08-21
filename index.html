@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>XV Dayra Lissette</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
+.slide{position:fixed;inset:0;width:100vw;height:100dvh;display:none;overflow:hidden}
+.slide.active{display:flex}
+
+/* Slide 1 */
+#s1{align-items:center;justify-content:center;background:#100419;perspective:1800px}
+.cover{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+transform-origin:left center;transform-style:preserve-3d;backface-visibility:hidden;
+transition:transform 1.35s cubic-bezier(.2,.75,.2,1)}
+.cover img{max-width:100vw;max-height:100dvh;width:auto;height:auto;object-fit:contain}
+#open{position:absolute;inset:0;border:0;background:transparent;z-index:5}
+#s1.opening .cover{transform:rotateY(-178deg)}
+
+/* Slide 2 */
+#s2{align-items:center;justify-content:center;background:#000}
+#photo{width:100%;height:100%;object-fit:contain;display:block}
+.nav{position:absolute;z-index:30;left:50%;bottom:16px;transform:translateX(-50%);
+padding:10px 26px;border-radius:999px;border:1px solid rgba(255,255,255,.9);
+background:rgba(70,35,95,.94);color:#fff;font:700 15px Arial,sans-serif;
+box-shadow:0 4px 16px rgba(0,0,0,.4);min-width:120px}
+#video{width:100%;height:100%;display:block;object-fit:cover;background:#000}
+@media (min-aspect-ratio:1/1){#video{object-fit:contain}}
+
+/* Slide 4 */
+#s4{align-items:center;justify-content:center;background:#190e27}
+#s4bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;background:#190e27}
+.timer{
+position:absolute;left:50%;bottom:76px;transform:translateX(-50%);
+width:min(36vw,500px);min-width:290px;
+padding:7px 12px 6px;border:1px solid rgba(220,220,230,.95);border-radius:15px;
+background:rgba(39,21,55,.97);color:#fff;text-align:center;
+box-shadow:0 4px 14px rgba(0,0,0,.28);z-index:20
+}
+.timer-title{font:600 11px Georgia,serif;letter-spacing:2px;color:#e4e4eb;margin-bottom:3px}
+.timer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.timer-num{font:400 clamp(20px,2.2vw,32px)/1 Georgia,serif;color:#fff}
+.timer-unit{margin-top:2px;font:400 8px/1 Arial,sans-serif;color:#eee}
+#next4{bottom:14px}
+@media(max-width:600px){
+  #s4bg{object-fit:cover;object-position:center top}
+  .timer{
+    bottom:70px;
+    width:78vw;
+    min-width:0;
+    padding:8px 8px 6px;
+    border-radius:14px;
+    background:rgba(38,20,54,.94);
+  }
+  .timer-title{font-size:9px;letter-spacing:2px}
+  .timer-num{font-size:24px}
+  .timer-unit{font-size:7px}
+  #next4{
+    bottom:12px;
+    font-size:14px;
+    padding:9px 20px;
+    min-width:110px;
+  }
+}
+</style>
+</head>
+<body>
+
+<section id="s1" class="slide active">
+  <div class="cover">
+    <img src="portada.png" alt="XV Dayra Lissette">
+    <button id="open" aria-label="Abrir invitación"></button>
+  </div>
+</section>
+
+<section id="s2" class="slide">
+  <img id="photo" src="foto-transicion.jpg" alt="Fotografía">
+  <button id="next2" class="nav" type="button">Siguiente</button>
+</section>
+
+<section id="s3" class="slide">
+  <video id="video" playsinline preload="auto">
+    <source src="video-segunda.mp4" type="video/mp4">
+  </video>
+  <button id="next3" class="nav" type="button">Siguiente</button>
+</section>
+
+<section id="s4" class="slide">
+  <img id="s4bg" src="slide4-contador.png" alt="">
+  <div class="timer" aria-label="Cuenta regresiva">
+    <div class="timer-title">FALTAN</div>
+    <div class="timer-grid">
+      <div><div id="d" class="timer-num">00</div><div class="timer-unit">DÍAS</div></div>
+      <div><div id="h" class="timer-num">00</div><div class="timer-unit">HORAS</div></div>
+      <div><div id="m" class="timer-num">00</div><div class="timer-unit">MINUTOS</div></div>
+      <div><div id="s" class="timer-num">00</div><div class="timer-unit">SEGUNDOS</div></div>
+    </div>
+  </div>
+  <button id="next4" class="nav" type="button">Siguiente</button>
+</section>
+
+<audio id="music" preload="auto" loop>
+  <source src="quince-anos.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const slides=[document.getElementById('s1'),document.getElementById('s2'),document.getElementById('s3'),document.getElementById('s4')];
+const video=document.getElementById('video');
+const music=document.getElementById('music');
+
+function showOnly(n){
+  slides.forEach((el,i)=>el.classList.toggle('active',i===n));
+}
+
+document.getElementById('open').addEventListener('click',()=>{
+  music.play().catch(()=>{});
+  slides[0].classList.add('opening');
+  showOnly(1);
+});
+document.getElementById('next2').addEventListener('click',()=>{
+  showOnly(2);
+  video.currentTime=0;
+  video.play().catch(()=>{});
+});
+document.getElementById('next3').addEventListener('click',()=>{
+  video.pause();
+  showOnly(3);
+});
+document.getElementById('next4').addEventListener('click',()=>{});
+
+function updateTimer(){
+  const target=new Date(2026,9,17,0,0,0).getTime();
+  let x=Math.max(0,target-Date.now());
+  const d=Math.floor(x/86400000); x%=86400000;
+  const h=Math.floor(x/3600000); x%=3600000;
+  const m=Math.floor(x/60000); x%=60000;
+  const s=Math.floor(x/1000);
+  document.getElementById('d').textContent=String(d).padStart(2,'0');
+  document.getElementById('h').textContent=String(h).padStart(2,'0');
+  document.getElementById('m').textContent=String(m).padStart(2,'0');
+  document.getElementById('s').textContent=String(s).padStart(2,'0');
+}
+updateTimer();
+setInterval(updateTimer,1000);
+</script>
+</body>
+</html>
