@@ -128,17 +128,18 @@ const photo=document.getElementById('photo');
 const videoWrap=document.getElementById('videoWrap');
 const video=document.getElementById('video');
 const open=document.getElementById('open');
+const siguiente=document.getElementById('siguiente');
 const music=document.getElementById('music');
 
 let started=false;
+let slide3Shown=false;
 
-function show(el){el.classList.add('active')}
-function hide(el){el.classList.remove('active')}
+function show(el){ el.classList.add('active'); }
+function hide(el){ el.classList.remove('active'); }
 
 function updateCountdown(){
  const target=new Date(2026,9,17,0,0,0).getTime();
- let diff=target-Date.now();
- if(diff<0) diff=0;
+ let diff=Math.max(0,target-Date.now());
  const d=Math.floor(diff/86400000); diff%=86400000;
  const h=Math.floor(diff/3600000); diff%=3600000;
  const m=Math.floor(diff/60000); diff%=60000;
@@ -151,6 +152,17 @@ function updateCountdown(){
 updateCountdown();
 setInterval(updateCountdown,1000);
 
+function goToSlide3(){
+ if(slide3Shown)return;
+ slide3Shown=true;
+ video.pause();
+ videoWrap.style.display='none';
+ photo.style.display='none';
+ hide(s2);
+ show(s3);
+ updateCountdown();
+}
+
 function openInvitation(){
  if(started)return;
  started=true;
@@ -158,11 +170,11 @@ function openInvitation(){
  s1.classList.add('opening');
 
  setTimeout(()=>{
-   hide(s1); show(s2);
+   hide(s1);
+   show(s2);
    photo.style.display='flex';
  },1350);
 
- // Foto: 8 segundos
  setTimeout(()=>{
    photo.style.display='none';
    videoWrap.style.display='flex';
@@ -172,40 +184,15 @@ function openInvitation(){
  },9350);
 }
 
-const siguiente=document.getElementById('siguiente');
-let videoFinished=false;
-
-function mostrarSlide3(){
- if(videoFinished)return;
- videoFinished=true;
- video.pause();
- videoWrap.style.display='none';
- hide(s2);
- show(s3);
- updateCountdown();
-}
-
-siguiente.addEventListener('click',mostrarSlide3);
-siguiente.addEventListener('touchend',e=>{
- e.preventDefault();
- mostrarSlide3();
-},{passive:false});
-
-function goToSlide3(){ mostrarSlide3(); }
+open.addEventListener('click',openInvitation);
+siguiente.addEventListener('click',goToSlide3);
 
 video.addEventListener('ended',goToSlide3);
-
-// Respaldo para celulares: detecta cuando el video llegó al final.
 video.addEventListener('timeupdate',()=>{
- if(video.duration && video.currentTime >= video.duration - 0.15){
+ if(video.duration && video.currentTime >= video.duration-0.2){
    goToSlide3();
  }
 });
-
-open.addEventListener('click',openInvitation);
-open.addEventListener('touchend',e=>{
- e.preventDefault(); openInvitation();
-},{passive:false});
 </script>
 </body>
 </html>
