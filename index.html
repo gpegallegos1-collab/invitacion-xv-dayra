@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>XV Dayra Lissette</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
+.slide{position:fixed;inset:0;width:100vw;height:100dvh;display:none}
+.slide.active{display:flex}
+
+/* SLIDE 1: portada */
+#slide1{align-items:center;justify-content:center;background:#100419;perspective:1800px}
+.book{position:relative;width:100%;height:100%;transform-style:preserve-3d}
+.cover{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+ transform-origin:left center;transform-style:preserve-3d;backface-visibility:hidden;
+ transition:transform 1.35s cubic-bezier(.2,.75,.2,1);z-index:5}
+.cover img{max-width:100vw;max-height:100dvh;width:auto;height:auto;display:block;object-fit:contain}
+#open{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;z-index:10}
+#slide1.opening .cover{transform:rotateY(-178deg)}
+
+/* SLIDE 2: foto + video */
+#slide2{align-items:center;justify-content:center;background:#000}
+#photo{position:absolute;inset:0;width:100%;height:100%;display:none;align-items:center;justify-content:center;background:#000;z-index:2}
+#photo img{width:100%;height:100%;object-fit:contain;object-position:center}
+#videoWrap{position:absolute;inset:0;width:100%;height:100%;display:none;align-items:center;justify-content:center;background:#000;z-index:3}
+#video{width:100%;height:100%;display:block;object-fit:cover;object-position:center;background:#000}
+#siguiente{
+ position:absolute;
+ z-index:10;
+ left:50%;
+ bottom:5%;
+ transform:translateX(-50%);
+ border:1px solid rgba(255,255,255,.8);
+ border-radius:999px;
+ padding:12px 28px;
+ min-width:130px;
+ background:rgba(50,20,70,.78);
+ color:#fff;
+ font-family:Georgia,"Times New Roman",serif;
+ font-size:17px;
+ letter-spacing:1px;
+ cursor:pointer;
+ box-shadow:0 4px 18px rgba(0,0,0,.35);
+}
+#siguiente:active{transform:translateX(-50%) scale(.97)}
+@media(max-width:600px){
+ #siguiente{bottom:4%;font-size:15px;padding:11px 25px;min-width:120px}
+}
+
+
+/* En pantallas horizontales se muestra el video completo */
+@media (min-aspect-ratio:1/1){
+ #video{object-fit:contain}
+}
+
+/* SLIDE 3: contador */
+#slide3{align-items:center;justify-content:center;background:#180d25}
+#slide3 .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+#slide3 .veil{position:absolute;inset:0;background:rgba(35,12,48,.05)}
+.countdown{
+ position:absolute;left:50%;top:74%;transform:translate(-50%,-50%);
+ width:min(50vw,760px);min-width:420px;padding:22px 34px 18px;
+ border:2px solid rgba(224,180,75,.9);border-radius:28px;
+ background:rgba(31,16,42,.92);box-shadow:0 0 28px rgba(219,167,61,.25);
+ text-align:center;color:#fff
+}
+.label{color:#e8bd61;letter-spacing:4px;font-size:clamp(14px,1.5vw,22px);margin-bottom:8px}
+.units{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.num{font-size:clamp(34px,4.5vw,68px);line-height:1;color:#fff;text-shadow:0 0 12px rgba(214,160,255,.7)}
+.unit{margin-top:8px;font-size:clamp(10px,1.1vw,17px);letter-spacing:1px;color:#eee4f5}
+@media(max-width:700px){
+ .countdown{top:73%;width:88vw;min-width:0;padding:14px 10px 12px;border-radius:20px}
+ .label{letter-spacing:2px;font-size:12px}
+ .units{gap:3px}.num{font-size:clamp(24px,8vw,42px)}
+ .unit{font-size:9px;letter-spacing:.3px}
+}
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1 -->
+<section id="slide1" class="slide active">
+ <div class="book">
+  <div class="cover">
+   <img src="portada.png" alt="XV Dayra Lissette">
+   <button id="open" aria-label="Abrir invitación"></button>
+  </div>
+ </div>
+</section>
+
+<!-- SLIDE 2 -->
+<section id="slide2" class="slide">
+ <div id="photo"><img src="foto-transicion.jpg" alt=""></div>
+ <button id="siguiente" type="button" aria-label="Ir a la siguiente pantalla">Siguiente</button>
+ <div id="videoWrap">
+  <video id="video" playsinline preload="auto">
+   <source src="video-segunda.mp4" type="video/mp4">
+  </video>
+ </div>
+</section>
+
+<!-- SLIDE 3 -->
+<section id="slide3" class="slide">
+ <img class="bg" src="slide3-contador.png" alt="">
+ <div class="veil"></div>
+ <section class="countdown" aria-label="Cuenta regresiva">
+  <div class="label">FALTAN</div>
+  <div class="units">
+   <div><div id="days" class="num">00</div><div class="unit">DÍAS</div></div>
+   <div><div id="hours" class="num">00</div><div class="unit">HORAS</div></div>
+   <div><div id="minutes" class="num">00</div><div class="unit">MINUTOS</div></div>
+   <div><div id="seconds" class="num">00</div><div class="unit">SEGUNDOS</div></div>
+  </div>
+ </section>
+</section>
+
+<audio id="music" preload="auto" loop>
+ <source src="quince-anos.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const s1=document.getElementById('slide1');
+const s2=document.getElementById('slide2');
+const s3=document.getElementById('slide3');
+const photo=document.getElementById('photo');
+const videoWrap=document.getElementById('videoWrap');
+const video=document.getElementById('video');
+const open=document.getElementById('open');
+const music=document.getElementById('music');
+
+let started=false;
+
+function show(el){el.classList.add('active')}
+function hide(el){el.classList.remove('active')}
+
+function updateCountdown(){
+ const target=new Date(2026,9,17,0,0,0).getTime();
+ let diff=target-Date.now();
+ if(diff<0) diff=0;
+ const d=Math.floor(diff/86400000); diff%=86400000;
+ const h=Math.floor(diff/3600000); diff%=3600000;
+ const m=Math.floor(diff/60000); diff%=60000;
+ const sec=Math.floor(diff/1000);
+ document.getElementById('days').textContent=String(d).padStart(2,'0');
+ document.getElementById('hours').textContent=String(h).padStart(2,'0');
+ document.getElementById('minutes').textContent=String(m).padStart(2,'0');
+ document.getElementById('seconds').textContent=String(sec).padStart(2,'0');
+}
+updateCountdown();
+setInterval(updateCountdown,1000);
+
+function openInvitation(){
+ if(started)return;
+ started=true;
+ music.play().catch(()=>{});
+ s1.classList.add('opening');
+
+ setTimeout(()=>{
+   hide(s1); show(s2);
+   photo.style.display='flex';
+ },1350);
+
+ // Foto: 8 segundos
+ setTimeout(()=>{
+   photo.style.display='none';
+   videoWrap.style.display='flex';
+   video.currentTime=0;
+   video.loop=false;
+   video.play().catch(()=>{});
+ },9350);
+}
+
+const siguiente=document.getElementById('siguiente');
+let videoFinished=false;
+
+function mostrarSlide3(){
+ if(videoFinished)return;
+ videoFinished=true;
+ video.pause();
+ videoWrap.style.display='none';
+ hide(s2);
+ show(s3);
+ updateCountdown();
+}
+
+siguiente.addEventListener('click',mostrarSlide3);
+siguiente.addEventListener('touchend',e=>{
+ e.preventDefault();
+ mostrarSlide3();
+},{passive:false});
+
+function goToSlide3(){ mostrarSlide3(); }
+
+video.addEventListener('ended',goToSlide3);
+
+// Respaldo para celulares: detecta cuando el video llegó al final.
+video.addEventListener('timeupdate',()=>{
+ if(video.duration && video.currentTime >= video.duration - 0.15){
+   goToSlide3();
+ }
+});
+
+open.addEventListener('click',openInvitation);
+open.addEventListener('touchend',e=>{
+ e.preventDefault(); openInvitation();
+},{passive:false});
+</script>
+</body>
+</html>
