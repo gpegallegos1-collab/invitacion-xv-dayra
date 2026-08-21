@@ -126,7 +126,7 @@ function goTo(el){
 function openInvitation(){
   music.play().catch(()=>{});
   s1.classList.add('opening');
-  setTimeout(()=>goTo(s2),1350);
+  goTo(s2);
 }
 document.getElementById('open').addEventListener('click',openInvitation);
 document.getElementById('open').addEventListener('touchend',e=>{
