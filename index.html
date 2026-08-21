@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang="es">
 <head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>XV Dayra Lissette</title>
@@ -99,51 +102,90 @@ border-radius:13px;background:rgba(38,20,54,.95);color:#fff;text-align:center;z-
 </audio>
 
 <script>
-const slides=[
-  document.getElementById('slide1'),
-  document.getElementById('slide2'),
-  document.getElementById('slide3'),
-  document.getElementById('slide4')
-];
-const video=document.getElementById('video');
-const music=document.getElementById('music');
-const days=document.getElementById('days');
-const hours=document.getElementById('hours');
-const minutes=document.getElementById('minutes');
-const seconds=document.getElementById('seconds');
 
-function show(n){
-  slides.forEach((s,i)=>s.classList.toggle('active',i===n));
-  if(n===2){video.currentTime=0;video.play().catch(()=>{});}
-  else{video.pause();}
-}
+document.addEventListener('DOMContentLoaded', function () {
+  const slides = [
+    document.getElementById('slide1'),
+    document.getElementById('slide2'),
+    document.getElementById('slide3'),
+    document.getElementById('slide4')
+  ];
+  const openBtn = document.getElementById('open');
+  const next2 = document.getElementById('next2');
+  const next3 = document.getElementById('next3');
+  const video = document.getElementById('video');
+  const music = document.getElementById('music');
 
-/* IMPORTANT: slide 1 is the only initial state. No automatic slide changes. */
-show(0);
+  let current = 0;
 
-document.getElementById('open').onclick=()=>{
-  music.play().catch(()=>{});
-  document.getElementById('slide1').classList.add('opening');
-  show(1);
-};
-document.getElementById('next2').onclick=()=>show(2);
-document.getElementById('next3').onclick=()=>show(3);
-/* Slide 4 has no automatic transition. */
+  function showSlide(n) {
+    if (n < 0 || n > 3) return;
+    slides.forEach(function (slide, i) {
+      slide.classList.toggle('active', i === n);
+    });
+    current = n;
 
-function updateCountdown(){
-  const target=new Date(2026,9,17,0,0,0).getTime();
-  let diff=Math.max(0,target-Date.now());
-  const d=Math.floor(diff/86400000); diff%=86400000;
-  const h=Math.floor(diff/3600000); diff%=3600000;
-  const m=Math.floor(diff/60000); diff%=60000;
-  const s=Math.floor(diff/1000);
-  days.textContent=String(d).padStart(2,'0');
-  hours.textContent=String(h).padStart(2,'0');
-  minutes.textContent=String(m).padStart(2,'0');
-  seconds.textContent=String(s).padStart(2,'0');
-}
-updateCountdown();
-setInterval(updateCountdown,1000);
+    if (n === 2) {
+      video.currentTime = 0;
+      video.play().catch(function(){});
+    } else {
+      video.pause();
+    }
+  }
+
+  // ALWAYS start on Slide 1.
+  showSlide(0);
+
+  // Slide 1 -> Slide 2 only after the user clicks.
+  openBtn.addEventListener('click', function () {
+    music.play().catch(function(){});
+    document.getElementById('slide1').classList.add('opening');
+    setTimeout(function () {
+      showSlide(1);
+    }, 900);
+  });
+
+  // Slide 2 -> Slide 3 only by clicking Siguiente.
+  next2.addEventListener('click', function () {
+    showSlide(2);
+  });
+
+  // Slide 3 -> Slide 4 only by clicking Siguiente.
+  next3.addEventListener('click', function () {
+    showSlide(3);
+  });
+
+  // The video NEVER changes the slide when it ends.
+  video.addEventListener('ended', function () {});
+
+  // Live countdown only; it NEVER controls navigation.
+  const days = document.getElementById('days');
+  const hours = document.getElementById('hours');
+  const minutes = document.getElementById('minutes');
+  const seconds = document.getElementById('seconds');
+
+  function updateCountdown() {
+    const target = new Date(2026, 9, 17, 0, 0, 0).getTime();
+    let diff = Math.max(0, target - Date.now());
+
+    const d = Math.floor(diff / 86400000);
+    diff %= 86400000;
+    const h = Math.floor(diff / 3600000);
+    diff %= 3600000;
+    const m = Math.floor(diff / 60000);
+    diff %= 60000;
+    const s = Math.floor(diff / 1000);
+
+    days.textContent = String(d).padStart(2, '0');
+    hours.textContent = String(h).padStart(2, '0');
+    minutes.textContent = String(m).padStart(2, '0');
+    seconds.textContent = String(s).padStart(2, '0');
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+});
+
 </script>
 </body>
 </html>
