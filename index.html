@@ -6,50 +6,99 @@
 <title>XV Dayra Lissette</title>
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;background:#100419}
-body{overflow:hidden;font-family:Georgia,"Times New Roman",serif}
-#pantalla1,#pantalla2{position:fixed;inset:0;width:100vw;height:100svh}
-#pantalla1{display:flex;align-items:center;justify-content:center;background:#100419}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#100419}
+body{font-family:Georgia,"Times New Roman",serif}
+
+/* PANTALLA 1 */
+#pantalla1{
+ position:fixed;inset:0;width:100vw;height:100svh;
+ display:flex;align-items:center;justify-content:center;background:#100419
+}
 .portada{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
 .portada img{width:auto;height:auto;max-width:100vw;max-height:100svh;object-fit:contain;display:block}
-#boton{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;cursor:pointer;z-index:20;padding:0}
-#pantalla2{display:none;overflow-y:auto;background:#eee5f2;color:#51355d}
-.contenido{min-height:100%;text-align:center;padding-bottom:45px}
-.video{width:100%;background:#000;line-height:0}
-video{display:block;width:100%;height:auto;max-height:60svh;object-fit:contain;background:#000}
-.texto{padding:28px 22px}
-.frase{font-size:clamp(18px,4.7vw,28px);line-height:1.55;font-style:italic}
-.titulo{margin-top:25px;font-size:clamp(34px,9vw,58px);color:#9b76ae;font-style:italic}
-.nombre{font-size:clamp(28px,7vw,44px);letter-spacing:2px;margin-top:6px}
+#boton{
+ position:absolute;inset:0;width:100%;height:100%;
+ border:0;background:transparent;cursor:pointer;z-index:20;padding:0
+}
+
+/* PANTALLA 2 */
+#pantalla2{
+ display:none;position:fixed;inset:0;width:100vw;height:100svh;
+ overflow:hidden;background:#12051d
+}
+.video-fondo{
+ position:absolute;inset:0;width:100%;height:100%;
+ object-fit:cover
+}
+.velo{
+ position:absolute;inset:0;
+ background:linear-gradient(
+   to bottom,
+   rgba(20,5,30,.18) 0%,
+   rgba(30,8,42,.22) 35%,
+   rgba(30,8,42,.55) 100%
+ )
+}
+.texto{
+ position:absolute;z-index:5;left:50%;top:50%;
+ transform:translate(-50%,-50%);
+ width:min(88vw,650px);
+ text-align:center;color:#fff;
+ text-shadow:0 2px 10px rgba(0,0,0,.8);
+ padding:20px
+}
+.frase{
+ font-size:clamp(18px,4.8vw,30px);
+ line-height:1.5;
+ font-style:italic;
+}
+.titulo{
+ margin-top:28px;
+ font-size:clamp(38px,10vw,68px);
+ font-style:italic;
+ color:#f0d8ff;
+}
+.nombre{
+ margin-top:4px;
+ font-size:clamp(28px,7vw,48px);
+ letter-spacing:2px;
+ color:#fff
+}
+@media(max-width:430px){
+ .texto{width:92vw;padding:14px}
+ .frase{font-size:18px;line-height:1.42}
+ .titulo{margin-top:20px;font-size:42px}
+ .nombre{font-size:30px}
+}
 </style>
 </head>
 <body>
 
 <section id="pantalla1">
-  <div class="portada">
-    <img src="portada.png" alt="XV Dayra Lissette">
-    <!-- Toda la portada es táctil para evitar problemas de posición del botón -->
-    <button id="boton" aria-label="Abrir invitación"></button>
-  </div>
+ <div class="portada">
+  <img src="portada.png" alt="XV Dayra Lissette">
+  <button id="boton" aria-label="Abrir invitación"></button>
+ </div>
 </section>
 
 <section id="pantalla2">
-  <div class="contenido">
-    <div class="video">
-      <video id="video" playsinline autoplay muted preload="auto">
-        <source src="video-segunda.mp4" type="video/mp4">
-      </video>
-    </div>
-    <div class="texto">
-      <div class="frase">“Hay momentos inolvidables que se atesoran en el corazón para siempre, por esa razón, quiero que compartas conmigo este día tan especial”</div>
-      <div class="titulo">Mis XV Años</div>
-      <div class="nombre">Dayra Lissette</div>
-    </div>
-  </div>
+ <video id="video" class="video-fondo" playsinline autoplay muted preload="auto">
+   <source src="video-segunda.mp4" type="video/mp4">
+ </video>
+ <div class="velo"></div>
+
+ <div class="texto">
+   <div class="frase">
+     “Hay momentos inolvidables que se atesoran en el corazón para siempre,
+     por esa razón, quiero que compartas conmigo este día tan especial”
+   </div>
+   <div class="titulo">Mis XV Años</div>
+   <div class="nombre">Dayra Lissette</div>
+ </div>
 </section>
 
 <audio id="musica" preload="auto" loop>
-  <source src="quince-anos.mp3" type="audio/mpeg">
+ <source src="quince-anos.mp3" type="audio/mpeg">
 </audio>
 
 <script>
@@ -59,21 +108,17 @@ const p2=document.getElementById("pantalla2");
 const video=document.getElementById("video");
 const musica=document.getElementById("musica");
 
-function abrirInvitacion(){
-  p1.style.display="none";
-  p2.style.display="block";
-  p2.scrollTop=0;
-
-  musica.play().catch(()=>{});
-
-  video.currentTime=0;
-  video.play().catch(()=>{});
+function abrir(){
+ p1.style.display="none";
+ p2.style.display="block";
+ musica.play().catch(()=>{});
+ video.currentTime=0;
+ video.play().catch(()=>{});
 }
-
-boton.addEventListener("click",abrirInvitacion);
-boton.addEventListener("touchend",function(e){
-  e.preventDefault();
-  abrirInvitacion();
+boton.addEventListener("click",abrir);
+boton.addEventListener("touchend",e=>{
+ e.preventDefault();
+ abrir();
 },{passive:false});
 </script>
 </body>
