@@ -196,7 +196,7 @@ background:rgba(38,20,54,.95);color:#fff;text-align:center;z-index:20}
       <div><div id="seconds" class="timer-num">00</div><div class="timer-unit">SEGUNDOS</div></div>
     </div>
   </div>
-  <button id="next4" class="nav">Siguiente</button>
+  <button type="button" id="next4" class="nav">Siguiente</button>
 </section>
 
 <section id="slide5" class="slide">
@@ -231,12 +231,15 @@ document.addEventListener('DOMContentLoaded',function(){
     document.getElementById('slide1').classList.add('opening');
     setTimeout(()=>show(1),900);
   };
-  document.getElementById('next2').onclick=()=>show(2);
-  document.getElementById('next3').onclick=()=>show(3); 
-  document.getElementById('next4').onclick=()=>show(4);
-  document.getElementById('next5').onclick=()=>show(5);
-  document.getElementById('next6').onclick=()=>show(0);
-  document.getElementById('next4').onclick=()=>show(4);
+  document.getElementById('next2').addEventListener('click',()=>show(2));
+  document.getElementById('next3').addEventListener('click',()=>show(3));
+  document.getElementById('next4').addEventListener('click',function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    show(4);
+  });
+  document.getElementById('next5').addEventListener('click',()=>show(5));
+  document.getElementById('next6').addEventListener('click',()=>show(0));
 
   // No automatic slide transition.
   video.addEventListener('ended',()=>{});
