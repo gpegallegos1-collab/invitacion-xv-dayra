@@ -79,13 +79,57 @@ background:rgba(38,20,54,.95);color:#fff;text-align:center;z-index:20}
 
 
 
-<style id="slide5-clean-v3">
-#slide5{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;overflow:hidden!important;background:#1b0d2b!important;display:none!important;}
-#slide5.active{display:block!important;}
-#slide5 #slide5Image{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:fill!important;display:block!important;z-index:1!important;}
-#slide5 #mapsLink{position:absolute!important;left:50%!important;top:78%!important;width:52%!important;height:6%!important;transform:translate(-50%,-50%)!important;z-index:5!important;background:transparent!important;}
-#slide5 #next5{position:absolute!important;left:50%!important;bottom:18px!important;transform:translateX(-50%)!important;z-index:20!important;min-width:150px!important;padding:12px 28px!important;border-radius:30px!important;background:#542080!important;color:white!important;border:2px solid white!important;font-size:18px!important;font-weight:700!important;box-shadow:0 4px 15px rgba(0,0,0,.35)!important;}
-@media(max-width:600px){#slide5 #next5{bottom:16px!important;min-width:145px!important;padding:11px 24px!important;font-size:17px!important;}}
+<style id="slide5-final-correct">
+#slide5{
+  position:fixed!important;
+  inset:0!important;
+  width:100vw!important;
+  height:100dvh!important;
+  display:none!important;
+  align-items:center!important;
+  justify-content:center!important;
+  overflow:hidden!important;
+  background:#180d27!important;
+}
+#slide5.active{display:flex!important}
+#slide5 #slide5Image{
+  display:block!important;
+  width:auto!important;
+  height:calc(100dvh - 72px)!important;
+  max-width:100vw!important;
+  max-height:calc(100dvh - 72px)!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+}
+#slide5 #mapsLink{
+  position:absolute!important;
+  z-index:20!important;
+  left:50%!important;
+  top:78%!important;
+  width:55%!important;
+  height:7%!important;
+  transform:translate(-50%,-50%)!important;
+  background:transparent!important;
+}
+#slide5 #next5{
+  position:absolute!important;
+  z-index:30!important;
+  left:50%!important;
+  bottom:8px!important;
+  transform:translateX(-50%)!important;
+}
+@media(max-width:600px){
+  #slide5 #slide5Image{
+    width:auto!important;
+    height:calc(100dvh - 72px)!important;
+    max-width:100vw!important;
+    max-height:calc(100dvh - 72px)!important;
+    object-fit:contain!important;
+  }
+}
 </style></head>
 <body>
 
@@ -123,9 +167,9 @@ background:rgba(38,20,54,.95);color:#fff;text-align:center;z-index:20}
 </section>
 
 <section id="slide5" class="slide">
-  <img id="slide5Image" src="slide5-clean-v3.png" alt="Ceremonia religiosa">
+  <img id="slide5Image" src="slide5-final-lila-v2.png" alt="Ceremonia religiosa">
   <a id="mapsLink" href="https://www.google.com/maps/search/?api=1&query=Parroquia%20San%20Judas%20Tadeo%2C%20Av.%20Valle%20de%20Juárez%207628%2C%20Frontera%2C%2032427%20Juárez%2C%20Chihuahua%2C%20México" target="_blank" rel="noopener" aria-label="Abrir Google Maps"></a>
-  <button id="next5" class="nav" type="button">Siguiente</button>
+  <button id="next5" class="nav">Siguiente</button>
 </section><audio id="music" preload="auto" loop><source src="quince-anos.mp3" type="audio/mpeg"></audio>
 
 <script>
