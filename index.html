@@ -74,7 +74,7 @@ background:rgba(38,20,54,.95);color:#fff;text-align:center;z-index:20}
    padding:8px 18px!important;min-width:105px!important;
  }
 }
-</style>
+<style>#slide5{align-items:center;justify-content:center;background:#ebe7f0}#slide5 .ceremonia-bg{position:absolute;inset:0;width:100%;height:100%;background:url("slide5-ceremonia.png") center/contain no-repeat}#mapsLink{position:absolute;left:50%;top:57%;width:145px;height:145px;transform:translate(-50%,-50%);z-index:20}#next5{bottom:12px;z-index:30}@media(max-width:600px){#slide5 .ceremonia-bg{background-size:cover}#mapsLink{width:120px;height:120px}}</style></style>
 </head>
 <body>
 
@@ -111,11 +111,11 @@ background:rgba(38,20,54,.95);color:#fff;text-align:center;z-index:20}
   <button id="next4" class="nav">Siguiente</button>
 </section>
 
-<audio id="music" preload="auto" loop><source src="quince-anos.mp3" type="audio/mpeg"></audio>
+<section id="slide5" class="slide"><div class="ceremonia-bg"></div><a id="mapsLink" href="https://www.google.com/maps/search/?api=1&query=Parroquia%20San%20Judas%20Tadeo%2C%20Av.%20Valle%20de%20Ju%C3%A1rez%207628%2C%20Frontera%2C%2032427%20Ju%C3%A1rez%2C%20Chihuahua%2C%20M%C3%A9xico" target="_blank" rel="noopener" aria-label="Abrir Google Maps"></a><button id="next5" class="nav">Siguiente</button></section><audio id="music" preload="auto" loop><source src="quince-anos.mp3" type="audio/mpeg"></audio>
 
 <script>
 document.addEventListener('DOMContentLoaded',function(){
-  const slides=[1,2,3,4].map(n=>document.getElementById('slide'+n));
+  const slides=[1,2,3,4,5].map(n=>document.getElementById('slide'+n));
   const video=document.getElementById('video');
   const music=document.getElementById('music');
 
@@ -135,6 +135,8 @@ document.addEventListener('DOMContentLoaded',function(){
   };
   document.getElementById('next2').onclick=()=>show(2);
   document.getElementById('next3').onclick=()=>show(3);
+  document.getElementById('next4').onclick=()=>show(4);
+  document.getElementById('next5').onclick=()=>show(0);
 
   // No automatic slide transition.
   video.addEventListener('ended',()=>{});
