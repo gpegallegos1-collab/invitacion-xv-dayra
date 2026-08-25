@@ -121,7 +121,48 @@ background:rgba(38,20,54,.95);color:#fff;text-align:center;z-index:20}
   transform:translateX(-50%)!important;
 }
 </style>
-
+<style id="slide6-reception">
+#slide6{
+  position:fixed!important;
+  inset:0!important;
+  width:100vw!important;
+  height:100dvh!important;
+  display:none!important;
+  align-items:center!important;
+  justify-content:center!important;
+  overflow:hidden!important;
+  background:#180d27!important;
+}
+#slide6.active{display:flex!important}
+#slide6 #slide6Card{
+  position:relative!important;
+  flex:0 0 auto!important;
+  width:min(66.6666667dvh,100vw)!important;
+  height:100dvh!important;
+  aspect-ratio:2 / 3!important;
+  background-image:url("recepcion.png")!important;
+  background-size:100% 100%!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+}
+#slide6 #maps6{
+  position:absolute!important;
+  z-index:20!important;
+  left:50%!important;
+  bottom:14%!important;
+  width:54%!important;
+  height:8%!important;
+  transform:translateX(-50%)!important;
+  background:transparent!important;
+}
+#slide6 #next6{
+  position:absolute!important;
+  z-index:30!important;
+  left:50%!important;
+  bottom:8px!important;
+  transform:translateX(-50%)!important;
+}
+</style>
 
 <style id="slide7-dress-code">
 #slide7{
@@ -203,12 +244,28 @@ background:rgba(38,20,54,.95);color:#fff;text-align:center;z-index:20}
   });
 })();
 </script>
-<style id="slide6-final-clean">
-#slide6{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;display:none!important;overflow:hidden!important;background:#180d27!important}
-#slide6.active{display:flex!important;align-items:flex-start!important;justify-content:center!important}
-#slide6 #slide6Card{position:relative!important;width:min(66.6667dvh,100vw)!important;height:92dvh!important;flex:none!important;background:url("recepcion.png") center/100% 100% no-repeat!important}
-#slide6 #maps6{position:absolute!important;z-index:100!important;left:50%!important;top:80.7%!important;width:41%!important;height:4.2%!important;background:transparent!important;border:0!important;padding:0!important;margin:0!important;display:block!important;cursor:pointer!important}
-#slide6 #next6{position:fixed!important;z-index:999!important;left:50%!important;top:94dvh!important;bottom:auto!important;transform:translateX(-50%)!important}
+<style id="reception-final-style">
+#slide6 #slide6Card{
+  background-image:url("recepcion.png")!important;
+  background-size:100% 100%!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+}
+#slide6 #maps6{
+  position:absolute!important;
+  z-index:100!important;
+  left:50%!important;
+  top:78%!important;
+  width:28%!important;
+  height:8%!important;
+  transform:translate(-50%,-50%)!important;
+  background:transparent!important;
+  border:0!important;
+  padding:0!important;
+  margin:0!important;
+  cursor:pointer!important;
+  pointer-events:auto!important;
+}
 </style></head>
 <body>
 
@@ -251,9 +308,9 @@ background:rgba(38,20,54,.95);color:#fff;text-align:center;z-index:20}
   <button id="next5" class="nav">Siguiente</button>
 </section>
 <section id="slide6" class="slide">
-<div id="slide6Card" aria-label="Recepción"></div>
-<a id="maps6" href="https://www.google.com/maps/search/?api=1&query=Sal%C3%B3n%20de%20Eventos%20Anitas%203%2C%20C.%20Ram%C3%B3n%20Rayon%201658%2C%2032550%20Ju%C3%A1rez%2C%20Chihuahua%2C%20M%C3%A9xico" target="_blank" rel="noopener" aria-label="Abrir Google Maps"></a>
-<button id="next6" class="nav">Siguiente</button>
+  <div id="slide6Card" aria-label="Recepción"></div>
+  <a id="maps6" href="https://www.google.com/maps/search/?api=1&query=Sal%C3%B3n%20de%20Eventos%20Anitas%203%2C%20C.%20Ram%C3%B3n%20Rayon%201658%2C%2032550%20Ju%C3%A1rez%2C%20Chihuahua%2C%20M%C3%A9xico" target="_blank" rel="noopener" aria-label="Abrir Google Maps"></a>
+  <button id="next6" class="nav">Siguiente</button>
 </section>
 
 <section id="slide7" class="slide">
