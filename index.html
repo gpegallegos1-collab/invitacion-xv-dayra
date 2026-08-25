@@ -268,6 +268,8 @@ background:rgba(38,20,54,.95);color:#fff;text-align:center;z-index:20}
 #slide6 #next6{
   display:none!important;
 }
+</style><style id="slide1-navigation-fix">
+#slide1 #next1{display:none!important;pointer-events:none!important}
 </style></head>
 <body>
 
@@ -275,8 +277,7 @@ background:rgba(38,20,54,.95);color:#fff;text-align:center;z-index:20}
   <div class="book"><div class="cover">
     <img src="portada.png" alt="XV Dayra Lissette">
     <button id="open" aria-label="Abrir invitación"></button>
-  </div></div>
-<button type="button" id="next1" class="nav">Siguiente</button></section>
+  </div></div></section>
 
 <section id="slide2" class="slide">
   <img src="foto-transicion.jpg" alt="">
@@ -312,7 +313,7 @@ background:rgba(38,20,54,.95);color:#fff;text-align:center;z-index:20}
 <section id="slide6" class="slide">
   <div id="slide6Card" aria-label="Recepción"></div>
   <a id="maps6" href="https://www.google.com/maps/search/?api=1&query=Sal%C3%B3n%20de%20Eventos%20Anitas%203%2C%20C.%20Ram%C3%B3n%20Rayon%201658%2C%2032550%20Ju%C3%A1rez%2C%20Chihuahua%2C%20M%C3%A9xico" target="_blank" rel="noopener" aria-label="Abrir Google Maps"></a>
-  <button id="next6" class="nav">Siguiente</button>
+  <button type="button" id="next6" class="nav" onclick="goToSlide(6)">Siguiente</button>
 </section>
 
 <section id="slide7" class="slide">
@@ -383,3 +384,44 @@ document.addEventListener('DOMContentLoaded',function(){
 </section>
 </body>
 </html>
+
+<style id="urgent-functional-fix">
+#slide6 #next6{
+  display:block!important;
+  position:absolute!important;
+  z-index:99999!important;
+  left:50%!important;
+  bottom:8px!important;
+  top:auto!important;
+  transform:translateX(-50%)!important;
+  pointer-events:auto!important;
+  cursor:pointer!important;
+}
+</style>
+<script id="urgent-countdown-fix">
+(function(){
+  function initCountdown(){
+    const days=document.getElementById('days');
+    const hours=document.getElementById('hours');
+    const minutes=document.getElementById('minutes');
+    const seconds=document.getElementById('seconds');
+    if(!days||!hours||!minutes||!seconds) return;
+    const target=new Date('2026-10-17T00:00:00-06:00').getTime();
+    function tick(){
+      let x=Math.max(0,target-Date.now());
+      const d=Math.floor(x/86400000); x%=86400000;
+      const h=Math.floor(x/3600000); x%=3600000;
+      const m=Math.floor(x/60000); x%=60000;
+      const s=Math.floor(x/1000);
+      days.textContent=String(d).padStart(2,'0');
+      hours.textContent=String(h).padStart(2,'0');
+      minutes.textContent=String(m).padStart(2,'0');
+      seconds.textContent=String(s).padStart(2,'0');
+    }
+    tick();
+    setInterval(tick,1000);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initCountdown);
+  else initCountdown();
+})();
+</script>
