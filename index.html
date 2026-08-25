@@ -285,6 +285,37 @@ button.nav:active{
   transform:translateY(-50%) scale(.96)!important;
 }
 </style>
+
+<style id="dynamic-pass-style">
+#slide9{
+  position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;
+  display:none!important;align-items:center!important;justify-content:center!important;
+  overflow:hidden!important;background:#180d27!important;
+}
+#slide9.active{display:flex!important}
+#passCard{
+  position:relative!important;height:100dvh!important;width:min(66.6666667dvh,100vw)!important;
+  aspect-ratio:2/3!important;flex:0 0 auto!important;
+}
+#passCard>img{width:100%!important;height:100%!important;object-fit:fill!important;display:block!important}
+.passValue{
+  position:absolute!important;z-index:20!important;color:#3f1d73!important;
+  font-family:Georgia,serif!important;font-style:italic!important;font-weight:700!important;
+  text-align:center!important;
+  background:rgba(236,228,246,.94)!important;
+}
+#passFamily{left:29%;top:55%;width:23%;height:7%;font-size:clamp(14px,2.6vw,24px)!important}
+#passGuests{left:48%;top:55%;width:23%;height:7%;font-size:clamp(13px,2.4vw,22px)!important}
+#passNumber{left:69%;top:55%;width:21%;height:7%;font-size:clamp(13px,2.4vw,22px)!important}
+#passSend,#passClose{
+  position:absolute!important;z-index:30!important;bottom:4%!important;
+  border-radius:25px!important;border:2px solid #eee!important;
+  background:linear-gradient(180deg,#7133a4,#4d187d)!important;color:#fff!important;
+  font-family:Georgia,serif!important;font-weight:700!important;cursor:pointer!important;
+}
+#passSend{left:27%;width:42%;height:7%}
+#passClose{right:5%;width:22%;height:7%}
+</style>
 </head>
 <body>
 
@@ -339,7 +370,7 @@ button.nav:active{
 
 <script>
 document.addEventListener('DOMContentLoaded',function(){
-  const slides=[1,2,3,4,5,6,7,8].map(n=>document.getElementById('slide'+n));
+  const slides=[1,2,3,4,5,6,7,8,9].map(n=>document.getElementById('slide'+n));
   const video=document.getElementById('video');
   const music=document.getElementById('music');
 
@@ -365,7 +396,7 @@ document.addEventListener('DOMContentLoaded',function(){
   document.getElementById('next5').addEventListener('click',()=>show(5));
   document.getElementById('next6').addEventListener('click',()=>show(6));
   document.getElementById('next7').addEventListener('click',()=>show(7));
-  document.getElementById('next8').addEventListener('click',()=>show(0));
+  document.getElementById('next8').addEventListener('click',()=>show(8));
 
   // No automatic slide transition.
   video.addEventListener('ended',()=>{});
@@ -396,50 +427,79 @@ document.addEventListener('DOMContentLoaded',function(){
     <div class="rsvp-hit no-hit" role="button" tabindex="0" aria-label="No asistiré"></div>
   </div>
 </section>
+
+<section id="slide9" class="slide">
+  <div id="passCard">
+    <img src="pase-acceso.png" alt="Pase de acceso">
+    <div id="passFamily" class="passValue">Familia</div>
+    <div id="passGuests" class="passValue">0 personas</div>
+    <div id="passNumber" class="passValue">#000</div>
+    <button id="passSend" type="button">ENVIAR A WHATSAPP</button>
+    <button id="passClose" type="button">CERRAR</button>
+  </div>
+</section>
 <script id="rsvp-whatsapp-final">
 (function(){
   const WA='526562661158';
+  let lastData=null;
 
   function askData(){
     const family=prompt('Escribe el nombre de la familia:');
     if(!family || !family.trim()) return null;
-    const count=prompt('¿Cuántas personas asistirán?');
+    let count=prompt('¿Cuántas personas asistirán?');
     if(!count || !count.trim()) return null;
-    return {family:family.trim(),count:count.trim()};
+    count=count.trim();
+    if(!/^\d+$/.test(count) || Number(count)<1){
+      alert('Escribe una cantidad válida de invitados.');
+      return null;
+    }
+    return {family:family.trim(),count:String(Number(count))};
   }
 
-  function sendWA(message){
-    const url='https://wa.me/'+WA+'?text='+encodeURIComponent(message);
-    // Use the same window to avoid browser popup blocking.
-    window.location.href=url;
+  function passNumber(){
+    return '#'+String(Math.floor(100+Math.random()*900));
+  }
+
+  function showPass(d){
+    lastData=d;
+    document.getElementById('passFamily').textContent=d.family;
+    document.getElementById('passGuests').textContent=d.count+' '+(d.count==='1'?'persona':'personas');
+    document.getElementById('passNumber').textContent=passNumber();
+    window.goToSlide(8);
+  }
+
+  function whatsapp(){
+    if(!lastData) return;
+    const num=document.getElementById('passNumber').textContent;
+    const msg='💜 Confirmación XV años de Dayra\\nFamilia: '+lastData.family+'\\nInvitados: '+lastData.count+'\\nPase: '+num;
+    const url='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
+    window.open(url,'_blank');
   }
 
   function yes(){
     const d=askData();
-    if(!d) return;
-    sendWA('💜 Hola, confirmo mi asistencia a los XV años de Dayra.\nFamilia: '+d.family+'\nAsistiremos: '+d.count+' personas.');
+    if(d) showPass(d);
   }
 
   function no(){
     const family=prompt('Escribe el nombre de la familia:');
     if(!family || !family.trim()) return;
-    sendWA('Hola, soy de la familia '+family.trim()+'. No podremos asistir a los XV años de Dayra.');
+    lastData={family:family.trim(),count:'0'};
+    document.getElementById('passFamily').textContent=lastData.family;
+    document.getElementById('passGuests').textContent='No asistirá';
+    document.getElementById('passNumber').textContent='SIN PASE';
+    document.getElementById('passSend').style.display='block';
+    window.goToSlide(8);
   }
 
-  function bind(){
+  document.addEventListener('DOMContentLoaded',function(){
     const y=document.querySelector('.yes-hit');
     const n=document.querySelector('.no-hit');
-    if(y){
-      y.onclick=yes;
-      y.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();yes();}};
-    }
-    if(n){
-      n.onclick=no;
-      n.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();no();}};
-    }
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bind);
-  else bind();
+    if(y) y.onclick=yes;
+    if(n) n.onclick=no;
+    document.getElementById('passSend').onclick=whatsapp;
+    document.getElementById('passClose').onclick=function(){window.goToSlide(7);};
+  });
 })();
 </script><style id="next-all-slides-final">
 /* Botón circular Siguiente: slides 2 a 7 */
