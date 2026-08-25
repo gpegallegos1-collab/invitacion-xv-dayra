@@ -294,31 +294,31 @@ button.nav:active{
 }
 #slide9.active{display:flex!important}
 #passCard{
- position:relative!important;width:min(66.6666667dvh,100vw)!important;height:100dvh!important;
- aspect-ratio:2/3!important;flex:0 0 auto!important;
+ position:relative!important;width:min(100vw,153.6dvh)!important;height:min(100dvh,65.104vw)!important;
+ max-width:100vw!important;max-height:100dvh!important;aspect-ratio:3/2!important;flex:0 0 auto!important;
 }
 #passCard>img{width:100%!important;height:100%!important;display:block!important;object-fit:fill!important}
 .passValue{
  position:absolute!important;z-index:30!important;
  color:#3f1d73!important;font-family:Georgia,serif!important;
- font-style:italic!important;font-weight:700!important;
- text-align:center!important;white-space:nowrap!important;
- background:transparent!important;border:0!important;padding:0!important;
+ font-style:italic!important;font-weight:700!important;text-align:center!important;
+ white-space:nowrap!important;background:transparent!important;border:0!important;padding:0!important;
  line-height:1.05!important;
 }
-#passFamily{left:25.5%!important;top:64.9%!important;width:18.5%!important;font-size:clamp(12px,2.2vw,20px)!important}
-#passGuests{left:43.5%!important;top:64.9%!important;width:20%!important;font-size:clamp(12px,2.2vw,20px)!important}
-#passNumber{left:64%!important;top:64.9%!important;width:20%!important;font-size:clamp(12px,2.2vw,20px)!important}
+#passFamily{left:25.0%!important;top:68.6%!important;width:16.5%!important;font-size:clamp(15px,2.1vw,28px)!important}
+#passGuests{left:41.8%!important;top:68.6%!important;width:17.5%!important;font-size:clamp(15px,2.1vw,28px)!important}
+#passNumber{left:60.5%!important;top:68.6%!important;width:18%!important;font-size:clamp(15px,2.1vw,28px)!important}
+
+/* Transparent hit areas over the buttons already drawn in the image */
 #passSave,#passClose{
- position:absolute!important;z-index:40!important;bottom:3.5%!important;
- height:6.5%!important;border-radius:28px!important;
- border:2px solid #eee!important;
- background:linear-gradient(180deg,#7133a4,#4d187d)!important;
- color:#fff!important;font-family:Georgia,serif!important;font-weight:700!important;
- cursor:pointer!important;
+ position:absolute!important;z-index:50!important;
+ bottom:5.3%!important;height:10.2%!important;
+ padding:0!important;margin:0!important;border:0!important;
+ background:transparent!important;color:transparent!important;
+ font-size:0!important;cursor:pointer!important;
 }
-#passSave{left:8%!important;width:29%!important;font-size:12px!important}
-#passClose{right:8%!important;width:22%!important;font-size:13px!important}
+#passSave{left:16.2%!important;width:28.5%!important}
+#passClose{left:57.8%!important;width:22.5%!important}
 </style>
 </head>
 <body>
@@ -438,8 +438,8 @@ document.addEventListener('DOMContentLoaded',function(){
     <div id="passFamily" class="passValue">Familia</div>
     <div id="passGuests" class="passValue">0 personas</div>
     <div id="passNumber" class="passValue">#000</div>
-    <button id="passSave" type="button">💾 GUARDAR MI PASE</button>
-    <button id="passClose" type="button">CERRAR</button>
+    <button id="passSave" type="button" aria-label="Guardar mi pase"></button>
+    <button id="passClose" type="button" aria-label="Cerrar"></button>
   </div>
 </section>
 <script id="rsvp-whatsapp-final">
@@ -447,117 +447,99 @@ document.addEventListener('DOMContentLoaded',function(){
   const WA='526562661158';
   let lastData=null;
 
-  function askFamily(){
-    const v=prompt('Escribe el nombre de la familia:');
-    return v && v.trim() ? v.trim() : null;
-  }
-
-  function askGuests(){
-    const v=prompt('¿Cuántas personas asistirán?');
-    if(!v || !v.trim()) return null;
-    const n=Number(v.trim());
-    if(!Number.isInteger(n) || n<1){
+  function askData(){
+    const family=prompt('Escribe el nombre de la familia:');
+    if(!family || !family.trim()) return null;
+    let count=prompt('¿Cuántas personas asistirán?');
+    if(!count || !count.trim()) return null;
+    count=count.trim();
+    if(!/^\d+$/.test(count) || Number(count)<1){
       alert('Escribe una cantidad válida de invitados.');
       return null;
     }
-    return String(n);
+    return {family:family.trim(),count:String(Number(count))};
   }
 
   function makePassNumber(){
     return '#'+String(Math.floor(100+Math.random()*900));
   }
 
-  function sendWhatsApp(data){
-    const text =
-      '💜 CONFIRMACIÓN DE ASISTENCIA — XV AÑOS DE DAYRA 💜\n\n' +
-      'Familia: '+data.family+'\n' +
-      'Invitados: '+data.count+' '+(data.count==='1'?'persona':'personas')+'\n' +
-      'Pase número: '+data.number+'\n\n' +
-      '¡Ahí nos vemos! 💜';
-
-    const url='https://wa.me/'+WA+'?text='+encodeURIComponent(text);
-    window.open(url,'_blank');
-  }
-
-  function showPass(data){
-    lastData=data;
-    document.getElementById('passFamily').textContent=data.family;
-    document.getElementById('passGuests').textContent=
-      data.count+' '+(data.count==='1'?'persona':'personas');
-    document.getElementById('passNumber').textContent=data.number;
+  function showPass(d){
+    lastData={family:d.family,count:d.count,number:makePassNumber()};
+    document.getElementById('passFamily').textContent=lastData.family;
+    document.getElementById('passGuests').textContent=lastData.count+' '+(lastData.count==='1'?'persona':'personas');
+    document.getElementById('passNumber').textContent=lastData.number;
     window.goToSlide(8);
   }
 
   function savePass(){
     if(!lastData) return;
+
     const img=new Image();
     img.onload=function(){
-      const sx=300,sy=330,sw=850,sh=585,scale=2;
       const c=document.createElement('canvas');
-      c.width=sw*scale;c.height=sh*scale;
+      c.width=img.naturalWidth;
+      c.height=img.naturalHeight;
       const ctx=c.getContext('2d');
-      ctx.drawImage(img,sx,sy,sw,sh,0,0,c.width,c.height);
-      ctx.fillStyle='#e9dff1';
-      ctx.fillRect(110*scale,395*scale,190*scale,72*scale);
-      ctx.fillRect(310*scale,395*scale,210*scale,72*scale);
-      ctx.fillRect(555*scale,395*scale,175*scale,72*scale);
+      ctx.drawImage(img,0,0);
+
+      // Cover only the three empty data boxes on the new design.
+      ctx.fillStyle='#eee6f5';
+      ctx.fillRect(430,875,205,78);
+      ctx.fillRect(710,875,210,78);
+      ctx.fillRect(1010,875,225,78);
+
       ctx.fillStyle='#3f1d73';
       ctx.textAlign='center';
-      ctx.font='bold italic 42px Georgia';
-      ctx.fillText(lastData.family,205*scale,440*scale);
-      ctx.fillText(lastData.count+' '+(lastData.count==='1'?'persona':'personas'),415*scale,440*scale);
-      ctx.fillText(lastData.number,640*scale,440*scale);
+      ctx.textBaseline='middle';
+      ctx.font='bold italic 38px Georgia';
+
+      ctx.fillText(lastData.family,532,914);
+      ctx.fillText(
+        lastData.count+' '+(lastData.count==='1'?'persona':'personas'),
+        815,914
+      );
+      ctx.fillText(lastData.number,1122,914);
+
       c.toBlob(function(blob){
         const url=URL.createObjectURL(blob);
         const a=document.createElement('a');
         a.href=url;
-        a.download='Pase_Dayra_'+lastData.family.replace(/\s+/g,'_')+'_'+lastData.number.replace('#','')+'.png';
-        document.body.appendChild(a);a.click();a.remove();
-        setTimeout(()=>URL.revokeObjectURL(url),1500);
+        a.download='Pase_Dayra_'+
+          lastData.family.replace(/\s+/g,'_')+'_'+
+          lastData.number.replace('#','')+'.png';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(function(){URL.revokeObjectURL(url);},1500);
       },'image/png');
     };
     img.src='pase-acceso.png';
   }
 
   function yes(){
-    // EXACT ORDER:
-    // 1) family -> 2) guest count -> 3) WhatsApp -> 4) pass
-    const family=askFamily();
-    if(!family) return;
-
-    const count=askGuests();
-    if(!count) return;
-
-    const data={family:family,count:count,number:makePassNumber()};
-    lastData=data;
-
-    // Send/open the WhatsApp confirmation FIRST.
-    sendWhatsApp(data);
-
-    // Generate/show the pass only after WhatsApp is launched.
-    setTimeout(function(){ showPass(data); },350);
+    const d=askData();
+    if(d) showPass(d);
   }
 
   function no(){
-    const family=askFamily();
-    if(!family) return;
-    lastData={family:family,count:'0',number:'SIN PASE'};
-    document.getElementById('passFamily').textContent=family;
+    const family=prompt('Escribe el nombre de la familia:');
+    if(!family || !family.trim()) return;
+    lastData={family:family.trim(),count:'0',number:'SIN PASE'};
+    document.getElementById('passFamily').textContent=lastData.family;
     document.getElementById('passGuests').textContent='No asistirá';
     document.getElementById('passNumber').textContent='SIN PASE';
-    const save=document.getElementById('passSave');
-    if(save) save.style.display='none';
+    document.getElementById('passSave').style.display='none';
     window.goToSlide(8);
   }
 
   document.addEventListener('DOMContentLoaded',function(){
-    const y=document.querySelector('.yes-hit');
-    const n=document.querySelector('.no-hit');
-    const save=document.getElementById('passSave');
-    const close=document.getElementById('passClose');
+    const y=document.querySelector('.yes-hit'), n=document.querySelector('.no-hit');
     if(y) y.onclick=yes;
     if(n) n.onclick=no;
+    const save=document.getElementById('passSave'), send=document.getElementById('passSend'), close=document.getElementById('passClose');
     if(save) save.onclick=savePass;
+    if(send) send.onclick=whatsapp;
     if(close) close.onclick=function(){window.goToSlide(7);};
   });
 })();
