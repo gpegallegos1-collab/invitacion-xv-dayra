@@ -345,24 +345,13 @@ document.addEventListener('DOMContentLoaded',function(){
 
 
 
-<div id="waChooser" aria-hidden="true">
-  <div id="waBox">
-    <h3>¿A qué WhatsApp deseas enviar la confirmación?</h3>
-    <button type="button" id="wa1">WhatsApp 1</button>
-    <button type="button" id="wa2">WhatsApp 2</button>
-    <button type="button" class="cancel" id="waCancel">Cancelar</button>
-  </div>
-</div>
+
 <script id="rsvp-whatsapp-final">
 (function(){
   const nums=['5216562661158'];
   let pendingMessage="";
   const chooser=document.getElementById("waChooser");
-  function choose(message){
-    pendingMessage=message;
-    chooser.classList.add("show");
-    chooser.setAttribute("aria-hidden","false");
-  }
+  function showWhatsAppChooser(message){ window.open('https://wa.me/5216562661158?text='+encodeURIComponent(message),'_blank'); }
   function closeChooser(){
     chooser.classList.remove("show");
     chooser.setAttribute("aria-hidden","true");
@@ -394,6 +383,31 @@ document.addEventListener('DOMContentLoaded',function(){
     chooser?.addEventListener("click",e=>{if(e.target===chooser) closeChooser();});
   });
 })();
+</script>
+
+<script id="single-whatsapp-final">
+document.addEventListener("DOMContentLoaded",function(){
+  const WA="5216562661158";
+  function send(text){ window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(text),"_blank"); }
+  const yes=document.querySelector(".yes-hit");
+  const no=document.querySelector(".no-hit");
+  if(yes){
+    yes.onclick=function(){
+      const family=prompt("Nombre de la familia:");
+      if(!family)return;
+      const count=prompt("Número de asistentes:");
+      if(!count)return;
+      send("💜 Hola, confirmo mi asistencia a los XV años de Dayra.\nFamilia: "+family+"\nAsistiremos: "+count+" personas.");
+    };
+  }
+  if(no){
+    no.onclick=function(){
+      const family=prompt("Nombre de la familia:");
+      if(!family)return;
+      send("Hola, soy de la familia "+family+". No podremos asistir a los XV años de Dayra.");
+    };
+  }
+});
 </script>
 </body>
 </html>
