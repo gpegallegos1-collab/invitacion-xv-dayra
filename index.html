@@ -265,6 +265,38 @@ background:rgba(38,20,54,.95);color:#fff;text-align:center;z-index:20}
   </div>
   <button type="button" id="next4" class="nav" onclick="goToSlide(5)">Siguiente</button>
 </section>
+<script id="countdown-standalone">
+(function(){
+  var target = new Date("2026-10-17T00:00:00-06:00").getTime();
+
+  function updateCountdown(){
+    var d = document.getElementById("days");
+    var h = document.getElementById("hours");
+    var m = document.getElementById("minutes");
+    var s = document.getElementById("seconds");
+    if (!d || !h || !m || !s) return;
+
+    var remaining = target - Date.now();
+    if (remaining < 0) remaining = 0;
+
+    var days = Math.floor(remaining / 86400000);
+    remaining %= 86400000;
+    var hours = Math.floor(remaining / 3600000);
+    remaining %= 3600000;
+    var minutes = Math.floor(remaining / 60000);
+    var seconds = Math.floor(remaining / 1000) % 60;
+
+    d.innerHTML = String(days).padStart(2,"0");
+    h.innerHTML = String(hours).padStart(2,"0");
+    m.innerHTML = String(minutes).padStart(2,"0");
+    s.innerHTML = String(seconds).padStart(2,"0");
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+})();
+</script>
+
 
 <section id="slide5" class="slide">
   <div id="slide5Card" aria-label="Ceremonia religiosa"></div>
@@ -393,32 +425,5 @@ document.addEventListener("DOMContentLoaded",function(){
 });
 </script>
 
-<script id="countdown-final-fixed">
-(function(){
-  function startCountdown(){
-    var days=document.getElementById("days");
-    var hours=document.getElementById("hours");
-    var minutes=document.getElementById("minutes");
-    var seconds=document.getElementById("seconds");
-    if(!days || !hours || !minutes || !seconds) return;
-    var target=new Date(2026,9,17,0,0,0).getTime();
-    function tick(){
-      var x=Math.max(0,target-Date.now());
-      var d=Math.floor(x/86400000); x%=86400000;
-      var hh=Math.floor(x/3600000); x%=3600000;
-      var mm=Math.floor(x/60000); x%=60000;
-      var ss=Math.floor(x/1000);
-      days.textContent=String(d).padStart(2,"0");
-      hours.textContent=String(hh).padStart(2,"0");
-      minutes.textContent=String(mm).padStart(2,"0");
-      seconds.textContent=String(ss).padStart(2,"0");
-    }
-    tick();
-    setInterval(tick,1000);
-  }
-  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",startCountdown);
-  else startCountdown();
-})();
-</script>
 </body>
 </html>
