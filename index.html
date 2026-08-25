@@ -251,8 +251,7 @@ background:rgba(38,20,54,.95);color:#fff;text-align:center;z-index:20}
   <div class="book"><div class="cover">
     <img src="portada.png" alt="XV Dayra Lissette">
     <button id="open" aria-label="Abrir invitación"></button>
-  </div></div>
-<button type="button" id="next1" class="nav">Siguiente</button></section>
+  </div></div></section>
 
 <section id="slide2" class="slide">
   <img src="foto-transicion.jpg" alt="">
@@ -319,7 +318,6 @@ document.addEventListener('DOMContentLoaded',function(){
     document.getElementById('slide1').classList.add('opening');
     setTimeout(()=>show(1),900);
   };
-  document.getElementById('next1').addEventListener('click',()=>show(1));
   document.getElementById('next2').addEventListener('click',()=>show(2));
   document.getElementById('next3').addEventListener('click',()=>show(3));
   document.getElementById('next4').addEventListener('click',()=>show(4));
