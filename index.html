@@ -281,11 +281,19 @@ background:rgba(38,20,54,.95);color:#fff;text-align:center;z-index:20}
   <div id="slide7Card" aria-label="Código de vestimenta"></div>
   <button type="button" id="next7" class="nav">Siguiente</button>
 </section>
+
+<section id="slide8" class="slide">
+  <div id="rsvpCard" aria-label="Confirmación de asistencia">
+    <img src="rsvp-confirmacion.png" alt="Confirma tu asistencia">
+    <div class="rsvp-hit yes-hit" role="button" tabindex="0" aria-label="Sí, asistiré"></div>
+    <div class="rsvp-hit no-hit" role="button" tabindex="0" aria-label="No asistiré"></div>
+  </div>
+</section>
 <audio id="music" preload="auto" loop><source src="quince-anos.mp3" type="audio/mpeg"></audio>
 
 <script>
 document.addEventListener('DOMContentLoaded',function(){
-  const slides=[1,2,3,4,5,6,7,8].map(n=>document.getElementById('slide'+n));
+  const slides=[1,2,3,4,5,6,7,8].map(n=>document.getElementById('slide'+n)).filter(Boolean);
   const video=document.getElementById('video');
   const music=document.getElementById('music');
 
@@ -334,14 +342,6 @@ document.addEventListener('DOMContentLoaded',function(){
   countdown();setInterval(countdown,1000);
 });
 </script>
-
-<section id="slide8" class="slide">
-  <div id="rsvpCard" aria-label="Confirmación de asistencia">
-    <img src="rsvp-confirmacion.png" alt="Confirma tu asistencia">
-    <div class="rsvp-hit yes-hit" role="button" tabindex="0" aria-label="Sí, asistiré"></div>
-    <div class="rsvp-hit no-hit" role="button" tabindex="0" aria-label="No asistiré"></div>
-  </div>
-</section>
 
 
 
