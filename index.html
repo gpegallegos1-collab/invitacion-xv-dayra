@@ -364,69 +364,38 @@ document.addEventListener('DOMContentLoaded',function(){
 
 
 
-<script id="rsvp-whatsapp-final">
-(function(){
-  const nums=['5216562661158'];
-  let pendingMessage="";
-  const chooser=document.getElementById("waChooser");
-  function showWhatsAppChooser(message){ window.open('https://wa.me/5216562661158?text='+encodeURIComponent(message),'_blank'); }
-  function closeChooser(){
-    chooser.classList.remove("show");
-    chooser.setAttribute("aria-hidden","true");
-    pendingMessage="";
-  }
-  function openWhatsApp(n){
-    if(!pendingMessage) return;
-    const url="https://api.whatsapp.com/send?phone="+n+"&text="+encodeURIComponent(pendingMessage);
-    window.location.href=url;
-  }
-  function yes(){
-    const family=prompt("Nombre de la familia:");
-    if(!family) return;
-    const count=prompt("Número de asistentes:");
-    if(!count) return;
-    choose("💜 Hola, confirmo mi asistencia a los XV años de Dayra.\nFamilia: "+family.trim()+"\nAsistiremos: "+count.trim()+" personas.");
-  }
-  function no(){
-    const family=prompt("Nombre de la familia:");
-    if(!family) return;
-    choose("Hola, soy de la familia "+family.trim()+". No podremos asistir a los XV años de Dayra.");
-  }
-  document.addEventListener("DOMContentLoaded",function(){
-    document.querySelector(".yes-hit")?.addEventListener("click",yes);
-    document.querySelector(".no-hit")?.addEventListener("click",no);
-    document.getElementById("wa1")?.addEventListener("click",()=>openWhatsApp(nums[0]));
-    document.getElementById("wa2")?.addEventListener("click",()=>openWhatsApp(nums[1]));
-    document.getElementById("waCancel")?.addEventListener("click",closeChooser);
-    chooser?.addEventListener("click",e=>{if(e.target===chooser) closeChooser();});
-  });
-})();
-</script>
 
-<script id="single-whatsapp-final">
+<script id="rsvp-single-handler">
 document.addEventListener("DOMContentLoaded",function(){
   const WA="5216562661158";
-  function send(text){ window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(text),"_blank"); }
+  function send(message){
+    window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(message),"_blank");
+  }
+
   const yes=document.querySelector(".yes-hit");
   const no=document.querySelector(".no-hit");
+
   if(yes){
-    yes.onclick=function(){
+    yes.addEventListener("click",function(){
       const family=prompt("Nombre de la familia:");
-      if(!family)return;
-      const count=prompt("Número de asistentes:");
-      if(!count)return;
-      send("💜 Hola, confirmo mi asistencia a los XV años de Dayra.\nFamilia: "+family+"\nAsistiremos: "+count+" personas.");
-    };
+      if(!family) return;
+
+      const count=prompt("¿Cuántas personas asistirán?");
+      if(!count) return;
+
+      send("💜 Hola, confirmo mi asistencia a los XV años de Dayra.\nFamilia: "+family.trim()+"\nAsistiremos: "+count.trim()+" personas.");
+    });
   }
+
   if(no){
-    no.onclick=function(){
+    no.addEventListener("click",function(){
       const family=prompt("Nombre de la familia:");
-      if(!family)return;
-      send("Hola, soy de la familia "+family+". No podremos asistir a los XV años de Dayra.");
-    };
+      if(!family) return;
+
+      send("Hola, soy de la familia "+family.trim()+". No podremos asistir a los XV años de Dayra.");
+    });
   }
 });
 </script>
-
 </body>
 </html>
