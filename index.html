@@ -294,8 +294,8 @@ button.nav:active{
 }
 #slide9.active{display:flex!important}
 #passCard{
- position:relative!important;width:min(100vw,89.02dvh)!important;height:min(100dvh,112.08vw)!important;
- max-width:100vw!important;max-height:100dvh!important;aspect-ratio:1183/1329!important;
+ position:relative!important;width:min(90.23dvh,100vw)!important;height:min(100dvh,110.83vw)!important;
+ max-width:100vw!important;max-height:100dvh!important;aspect-ratio:1191/1320!important;
  flex:0 0 auto!important;
 }
 #passCard>img{width:100%!important;height:100%!important;display:block!important;object-fit:fill!important}
@@ -303,32 +303,23 @@ button.nav:active{
  position:absolute!important;z-index:30!important;
  color:#3f1d73!important;font-family:Georgia,serif!important;
  font-style:italic!important;font-weight:700!important;text-align:center!important;
- white-space:nowrap!important;background:transparent!important;border:0!important;padding:0!important;
- line-height:1.05!important;
+ white-space:normal!important;background:transparent!important;border:0!important;padding:0!important;
+ line-height:1.08!important;overflow-wrap:anywhere!important;
 }
-#passFamily{left:27.5%!important;top:69.0%!important;width:14%!important;font-size:clamp(14px,2vw,26px)!important}
-#passGuests{left:47.0%!important;top:69.0%!important;width:14%!important;font-size:clamp(14px,2vw,26px)!important}
-#passNumber{left:67.0%!important;top:69.0%!important;width:14%!important;font-size:clamp(14px,2vw,26px)!important}
-
-/* Transparent hit areas exactly over the buttons drawn in the artwork.
-   Remove all inherited visual styling and pseudo-elements. */
+#passFamily{left:27.0%!important;top:66.0%!important;width:17.0%!important;font-size:clamp(13px,2vw,25px)!important}
+#passGuests{left:47.0%!important;top:66.0%!important;width:17.0%!important;font-size:clamp(15px,2.2vw,28px)!important}
+#passNumber{left:67.5%!important;top:66.0%!important;width:17.0%!important;font-size:clamp(16px,2.3vw,30px)!important}
 #passSave,#passClose{
  position:absolute!important;z-index:50!important;
- bottom:5.3%!important;height:10.2%!important;
- padding:0!important;margin:0!important;
- border:0!important;outline:0!important;
+ bottom:10.0%!important;height:8.5%!important;
+ padding:0!important;margin:0!important;border:0!important;outline:0!important;
  background:transparent!important;background-image:none!important;
- box-shadow:none!important;color:transparent!important;
- -webkit-text-fill-color:transparent!important;
- text-shadow:none!important;font-size:0!important;
- line-height:0!important;cursor:pointer!important;
- appearance:none!important;-webkit-appearance:none!important;
+ box-shadow:none!important;color:transparent!important;font-size:0!important;
+ cursor:pointer!important;appearance:none!important;-webkit-appearance:none!important;
 }
-#passSave::before,#passSave::after,#passClose::before,#passClose::after{
- content:none!important;display:none!important;
-}
-#passSave{left:17.8%!important;width:28%!important}
-#passClose{left:57.7%!important;width:22%!important}
+#passSave::before,#passSave::after,#passClose::before,#passClose::after{content:none!important;display:none!important}
+#passSave{left:21.0%!important;width:31.0%!important}
+#passClose{left:59.5%!important;width:24.0%!important}
 </style>
 </head>
 <body>
@@ -454,121 +445,36 @@ document.addEventListener('DOMContentLoaded',function(){
 </section>
 <script id="rsvp-whatsapp-final">
 (function(){
+  const WA='526562661158';
   let lastData=null;
 
-  function askFamily(){
-    const v=prompt('Escribe el nombre de la familia:');
-    return v && v.trim() ? v.trim() : null;
-  }
-
-  function askGuests(){
-    const v=prompt('¿Cuántas personas asistirán?');
-    if(!v || !v.trim()) return null;
-    const n=Number(v.trim());
-    if(!Number.isInteger(n) || n<1){
+  function askData(){
+    const family=prompt('Escribe el nombre de la familia:');
+    if(!family || !family.trim()) return null;
+    let count=prompt('¿Cuántas personas asistirán?');
+    if(!count || !count.trim()) return null;
+    count=count.trim();
+    if(!/^\d+$/.test(count) || Number(count)<1){
       alert('Escribe una cantidad válida de invitados.');
       return null;
     }
-    return String(n);
+    return {family:family.trim(),count:String(Number(count))};
   }
 
   function makePassNumber(){
     return '#'+String(Math.floor(100+Math.random()*900));
   }
 
-  function buildPassBlob(data, callback){
-    const img=new Image();
-    img.onload=function(){
-      const c=document.createElement('canvas');
-      c.width=img.naturalWidth;
-      c.height=img.naturalHeight;
-      const ctx=c.getContext('2d');
-      ctx.drawImage(img,0,0);
-
-      // Clean data fields of the new pass design.
-      ctx.fillStyle='#eee6f5';
-      ctx.fillRect(430,875,205,78);
-      ctx.fillRect(710,875,210,78);
-      ctx.fillRect(1010,875,225,78);
-
-      ctx.fillStyle='#3f1d73';
-      ctx.textAlign='center';
-      ctx.textBaseline='middle';
-      ctx.font='bold italic 38px Georgia';
-      ctx.fillText(data.family,532,914);
-      ctx.fillText(
-        data.count+' '+(data.count==='1'?'persona':'personas'),
-        815,914
-      );
-      ctx.fillText(data.number,1122,914);
-
-      c.toBlob(function(blob){
-        callback(blob);
-      },'image/png');
-    };
-    img.src='pase-acceso.png';
-  }
-
-  async function sharePassOnWhatsApp(data){
-    buildPassBlob(data, async function(blob){
-      const filename='Pase_Dayra_'+
-        data.family.replace(/\s+/g,'_')+'_'+
-        data.number.replace('#','')+'.png';
-
-      const message =
-        '💜 CONFIRMACIÓN DE ASISTENCIA — XV AÑOS DE DAYRA 💜\n\n'+
-        'Familia: '+data.family+'\n'+
-        'Invitados: '+data.count+' '+(data.count==='1'?'persona':'personas')+'\n'+
-        'Pase número: '+data.number+'\n\n'+
-        '¡Ahí nos vemos! 💜\n'+
-        'Regresa a la invitación para guardar tu pase de entrada. 🎟️';
-
-      try{
-        const file=new File([blob],filename,{type:'image/png'});
-
-        // On compatible mobile browsers this opens the native share sheet
-        // with the pass image attached; the guest can choose WhatsApp.
-        if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
-          await navigator.share({
-            files:[file],
-            text:message,
-            title:'Pase de acceso — XV años de Dayra'
-          });
-          return;
-        }
-
-        // Fallback: download the pass and open WhatsApp with the confirmation text.
-        const url=URL.createObjectURL(blob);
-        const a=document.createElement('a');
-        a.href=url;
-        a.download=filename;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        setTimeout(()=>URL.revokeObjectURL(url),1500);
-
-        const wa='https://wa.me/?text='+encodeURIComponent(message);
-        window.open(wa,'_blank');
-        alert('Tu pase se descargó. WhatsApp se abrirá con la confirmación. Adjunta el pase descargado antes de enviarlo.');
-      }catch(e){
-        if(e && e.name==='AbortError') return;
-        alert('El pase fue generado. Usa "GUARDAR MI PASE" para guardarlo y después compártelo por WhatsApp.');
-      }
-    });
-  }
-
-  function showPass(data){
-    lastData=data;
-    document.getElementById('passFamily').textContent=data.family;
-    document.getElementById('passGuests').textContent=
-      data.count+' '+(data.count==='1'?'persona':'personas');
-    document.getElementById('passNumber').textContent=data.number;
+  function showPass(d){
+    lastData={family:d.family,count:d.count,number:makePassNumber()};
+    document.getElementById('passFamily').textContent=lastData.family;
+    document.getElementById('passGuests').textContent=lastData.count+' '+(lastData.count==='1'?'persona':'personas');
+    document.getElementById('passNumber').textContent=lastData.number;
     window.goToSlide(8);
   }
 
   function savePass(){
     if(!lastData) return;
-
     const img=new Image();
     img.onload=function(){
       const c=document.createElement('canvas');
@@ -577,18 +483,25 @@ document.addEventListener('DOMContentLoaded',function(){
       const ctx=c.getContext('2d');
       ctx.drawImage(img,0,0);
 
-      // The new artwork already contains clean empty boxes.
+      ctx.fillStyle='#eee6f5';
+      ctx.fillRect(315,858,215,105);
+      ctx.fillRect(575,858,215,105);
+      ctx.fillRect(835,858,215,105);
+
       ctx.fillStyle='#3f1d73';
       ctx.textAlign='center';
       ctx.textBaseline='middle';
-      ctx.font='bold italic 34px Georgia';
 
-      ctx.fillText(lastData.family,414,954);
-      ctx.fillText(
-        lastData.count+' '+(lastData.count==='1'?'persona':'personas'),
-        645,954
-      );
-      ctx.fillText(lastData.number,886,954);
+      ctx.font='bold italic 31px Georgia';
+      ctx.fillText(lastData.family,422,907);
+
+      ctx.font='bold 38px Georgia';
+      ctx.fillText(lastData.count,682,900);
+      ctx.font='bold 25px Georgia';
+      ctx.fillText(lastData.count==='1'?'persona':'personas',682,935);
+
+      ctx.font='bold 42px Georgia';
+      ctx.fillText(lastData.number,942,912);
 
       c.toBlob(function(blob){
         const url=URL.createObjectURL(blob);
@@ -605,50 +518,28 @@ document.addEventListener('DOMContentLoaded',function(){
   }
 
   function yes(){
-    const family=askFamily();
-    if(!family) return;
-
-    const count=askGuests();
-    if(!count) return;
-
-    const data={
-      family:family,
-      count:count,
-      number:makePassNumber()
-    };
-
-    // Show the pass immediately, then share the same personalized pass
-    // through the phone's native share sheet so WhatsApp can receive it.
-    showPass(data);
-    setTimeout(function(){
-      sharePassOnWhatsApp(data);
-    },300);
+    const d=askData();
+    if(d) showPass(d);
   }
 
   function no(){
-    const family=askFamily();
-    if(!family) return;
-
-    lastData={family:family,count:'0',number:'SIN PASE'};
-    document.getElementById('passFamily').textContent=family;
+    const family=prompt('Escribe el nombre de la familia:');
+    if(!family || !family.trim()) return;
+    lastData={family:family.trim(),count:'0',number:'SIN PASE'};
+    document.getElementById('passFamily').textContent=lastData.family;
     document.getElementById('passGuests').textContent='No asistirá';
     document.getElementById('passNumber').textContent='SIN PASE';
-
-    const save=document.getElementById('passSave');
-    if(save) save.style.display='none';
-
+    document.getElementById('passSave').style.display='none';
     window.goToSlide(8);
   }
 
   document.addEventListener('DOMContentLoaded',function(){
-    const y=document.querySelector('.yes-hit');
-    const n=document.querySelector('.no-hit');
-    const save=document.getElementById('passSave');
-    const close=document.getElementById('passClose');
-
+    const y=document.querySelector('.yes-hit'), n=document.querySelector('.no-hit');
     if(y) y.onclick=yes;
     if(n) n.onclick=no;
+    const save=document.getElementById('passSave'), send=document.getElementById('passSend'), close=document.getElementById('passClose');
     if(save) save.onclick=savePass;
+    if(send) send.onclick=whatsapp;
     if(close) close.onclick=function(){window.goToSlide(7);};
   });
 })();
