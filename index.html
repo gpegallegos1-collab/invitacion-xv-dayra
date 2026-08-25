@@ -196,6 +196,54 @@ background:rgba(38,20,54,.95);color:#fff;text-align:center;z-index:20}
   transform:translateX(-50%)!important;
 }
 </style>
+
+<style id="rsvp-final-style">
+#slide8{
+  position:fixed!important; inset:0!important; width:100vw!important; height:100dvh!important;
+  display:none!important; align-items:center!important; justify-content:center!important;
+  overflow:hidden!important; background:#180d27!important;
+}
+#slide8.active{display:flex!important}
+#rsvpCard{
+  position:relative!important; height:100dvh!important; width:min(66.6666667dvh,100vw)!important;
+  aspect-ratio:2/3!important; flex:0 0 auto!important;
+}
+#rsvpCard img{display:block!important; width:100%!important; height:100%!important; object-fit:fill!important}
+.rsvp-hit{position:absolute!important; cursor:pointer!important; z-index:10000!important}
+.yes-hit{left:6%; width:43%; bottom:5%; height:9%}
+.no-hit{right:6%; width:43%; bottom:8%; height:9%}
+</style>
+<script id="rsvp-whatsapp">
+(function(){
+  const waNumbers=['5216562661158','5216565511692'];
+  function askData(){
+    const family=prompt('Escribe el nombre de la familia:');
+    if(!family) return null;
+    const count=prompt('¿Cuántas personas asistirán?');
+    if(!count) return null;
+    return {family:family.trim(),count:count.trim()};
+  }
+  function openWA(message){
+    const encoded=encodeURIComponent(message);
+    waNumbers.forEach((n,i)=>{
+      setTimeout(()=>window.open('https://wa.me/'+n+'?text='+encoded,'_blank'),i*250);
+    });
+  }
+  function yes(){
+    const d=askData(); if(!d) return;
+    openWA('💜 Hola, confirmo mi asistencia a los XV años de Dayra.\\nFamilia: '+d.family+'\\nAsistiremos: '+d.count+' personas.');
+  }
+  function no(){
+    const family=prompt('Escribe el nombre de la familia:'); if(!family) return;
+    openWA('Hola, soy de la familia '+family.trim()+'. No podremos asistir a los XV años de Dayra.');
+  }
+  window.addEventListener('DOMContentLoaded',function(){
+    const y=document.querySelector('.yes-hit'), n=document.querySelector('.no-hit');
+    if(y){y.onclick=yes;y.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')yes();};}
+    if(n){n.onclick=no;n.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')no();};}
+  });
+})();
+</script>
 </head>
 <body>
 
@@ -251,7 +299,7 @@ background:rgba(38,20,54,.95);color:#fff;text-align:center;z-index:20}
 
 <script>
 document.addEventListener('DOMContentLoaded',function(){
-  const slides=[1,2,3,4,5,6,7].map(n=>document.getElementById('slide'+n));
+  const slides=[1,2,3,4,5,6,7,8].map(n=>document.getElementById('slide'+n));
   const video=document.getElementById('video');
   const music=document.getElementById('music');
 
@@ -277,7 +325,8 @@ document.addEventListener('DOMContentLoaded',function(){
   document.getElementById('next4').addEventListener('click',()=>show(4));
   document.getElementById('next5').addEventListener('click',()=>show(5));
   document.getElementById('next6').addEventListener('click',()=>show(6));
-  document.getElementById('next7').addEventListener('click',()=>show(0));
+  document.getElementById('next7').addEventListener('click',()=>show(7));
+  document.getElementById('next8').addEventListener('click',()=>show(0));
 
   // No automatic slide transition.
   video.addEventListener('ended',()=>{});
@@ -300,5 +349,13 @@ document.addEventListener('DOMContentLoaded',function(){
   countdown();setInterval(countdown,1000);
 });
 </script>
+
+<section id="slide8" class="slide">
+  <div id="rsvpCard" aria-label="Confirmación de asistencia">
+    <img src="rsvp-confirmacion.png" alt="Confirma tu asistencia">
+    <div class="rsvp-hit yes-hit" role="button" tabindex="0" aria-label="Sí, asistiré"></div>
+    <div class="rsvp-hit no-hit" role="button" tabindex="0" aria-label="No asistiré"></div>
+  </div>
+</section>
 </body>
 </html>
