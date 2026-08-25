@@ -441,7 +441,46 @@ document.addEventListener('DOMContentLoaded',function(){
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bind);
   else bind();
 })();
-</script></body>
+</script><style id="next-all-slides-final">
+/* Botón circular Siguiente: slides 2 a 7 */
+#slide2 #next2,#slide3 #next3,#slide4 #next4,#slide5 #next5,#slide6 #next6,#slide7 #next7{
+  position:absolute!important;
+  right:12px!important;
+  left:auto!important;
+  top:50%!important;
+  bottom:auto!important;
+  transform:translateY(-50%)!important;
+  width:52px!important;
+  height:52px!important;
+  min-width:52px!important;
+  max-width:52px!important;
+  padding:0!important;
+  margin:0!important;
+  border-radius:50%!important;
+  border:2px solid #e8e6ee!important;
+  background:linear-gradient(180deg,#7133a4 0%,#4d187d 100%)!important;
+  color:transparent!important;
+  font-size:0!important;
+  line-height:1!important;
+  box-shadow:0 3px 8px rgba(0,0,0,.32)!important;
+  z-index:999999!important;
+  display:block!important;
+  pointer-events:auto!important;
+  cursor:pointer!important;
+}
+#slide2 #next2::after,#slide3 #next3::after,#slide4 #next4::after,
+#slide5 #next5::after,#slide6 #next6::after,#slide7 #next7::after{
+  content:"›"!important;
+  display:block!important;
+  color:#fff!important;
+  font-family:Arial,sans-serif!important;
+  font-size:34px!important;
+  font-weight:400!important;
+  line-height:47px!important;
+  text-align:center!important;
+  margin:0!important;
+}
+</style></body>
 </html>
 
 <style id="urgent-functional-fix">
