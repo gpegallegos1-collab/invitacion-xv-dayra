@@ -287,47 +287,18 @@ button.nav:active{
 </style>
 
 <style id="dynamic-pass-style">
-#slide9{
-  position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;
-  display:none!important;align-items:center!important;justify-content:center!important;
-  overflow:hidden!important;background:#180d27!important;
-}
+#slide9{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;display:none!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;background:#180d27!important}
 #slide9.active{display:flex!important}
-#passCard{
-  position:relative!important;height:100dvh!important;width:min(66.6666667dvh,100vw)!important;
-  aspect-ratio:2/3!important;flex:0 0 auto!important;
-}
+#passCard{position:relative!important;height:100dvh!important;width:min(66.6666667dvh,100vw)!important;aspect-ratio:2/3!important;flex:0 0 auto!important}
 #passCard>img{width:100%!important;height:100%!important;object-fit:fill!important;display:block!important}
-.passValue{
-  position:absolute!important;z-index:30!important;
-  color:#3f1d73!important;
-  font-family:Georgia,serif!important;font-style:italic!important;font-weight:700!important;
-  text-align:center!important;
-  background:rgba(232,220,243,.96)!important;
-  border-radius:4px!important;
-  padding:2px 4px!important;
-  box-sizing:border-box!important;
-}
-#passFamily{
-  left:28%!important;top:60.5%!important;width:22%!important;height:6%!important;
-  font-size:clamp(12px,2.1vw,20px)!important;
-}
-#passGuests{
-  left:49%!important;top:60.5%!important;width:22%!important;height:6%!important;
-  font-size:clamp(12px,2.1vw,20px)!important;
-}
-#passNumber{
-  left:70%!important;top:60.5%!important;width:20%!important;height:6%!important;
-  font-size:clamp(12px,2.1vw,20px)!important;
-}
-#passSend,#passClose{
-  position:absolute!important;z-index:30!important;bottom:4%!important;
-  height:6.5%!important;border-radius:25px!important;border:2px solid #eee!important;
-  background:linear-gradient(180deg,#7133a4,#4d187d)!important;color:#fff!important;
-  font-family:Georgia,serif!important;font-weight:700!important;cursor:pointer!important;
-}
-#passSend{left:20%!important;width:47%!important}
-#passClose{right:5%!important;width:25%!important}
+.passValue{position:absolute!important;z-index:30!important;color:#3f1d73!important;font-family:Georgia,serif!important;font-style:italic!important;font-weight:700!important;text-align:center!important;background:transparent!important;padding:0!important;box-sizing:border-box!important;white-space:nowrap!important}
+#passFamily{left:28%!important;top:64%!important;width:18%!important;font-size:clamp(12px,2vw,20px)!important}
+#passGuests{left:46%!important;top:64%!important;width:18%!important;font-size:clamp(12px,2vw,20px)!important}
+#passNumber{left:65%!important;top:64%!important;width:18%!important;font-size:clamp(12px,2vw,20px)!important}
+#passSave,#passSend,#passClose{position:absolute!important;z-index:30!important;bottom:4%!important;height:6.5%!important;border-radius:25px!important;border:2px solid #eee!important;background:linear-gradient(180deg,#7133a4,#4d187d)!important;color:#fff!important;font-family:Georgia,serif!important;font-weight:700!important;cursor:pointer!important}
+#passSave{left:5%!important;width:27%!important;font-size:12px!important}
+#passSend{left:33%!important;width:39%!important;font-size:12px!important}
+#passClose{right:5%!important;width:20%!important;font-size:12px!important}
 </style>
 </head>
 <body>
@@ -447,7 +418,8 @@ document.addEventListener('DOMContentLoaded',function(){
     <div id="passFamily" class="passValue">Familia</div>
     <div id="passGuests" class="passValue">0 personas</div>
     <div id="passNumber" class="passValue">#000</div>
-    <button id="passSend" type="button">ENVIAR A WHATSAPP</button>
+    <button id="passSave" type="button">💾 GUARDAR MI PASE</button>
+    <button id="passSend" type="button">📲 ENVIAR A WHATSAPP</button>
     <button id="passClose" type="button">CERRAR</button>
   </div>
 </section>
@@ -469,24 +441,61 @@ document.addEventListener('DOMContentLoaded',function(){
     return {family:family.trim(),count:String(Number(count))};
   }
 
-  function passNumber(){
+  function makePassNumber(){
     return '#'+String(Math.floor(100+Math.random()*900));
   }
 
   function showPass(d){
-    lastData=d;
-    document.getElementById('passFamily').textContent=d.family;
-    document.getElementById('passGuests').textContent=d.count+' '+(d.count==='1'?'persona':'personas');
-    document.getElementById('passNumber').textContent=passNumber();
+    lastData={family:d.family,count:d.count,number:makePassNumber()};
+    document.getElementById('passFamily').textContent=lastData.family;
+    document.getElementById('passGuests').textContent=lastData.count+' '+(lastData.count==='1'?'persona':'personas');
+    document.getElementById('passNumber').textContent=lastData.number;
     window.goToSlide(8);
+  }
+
+  function savePass(){
+    if(!lastData) return;
+    const img=new Image();
+    img.onload=function(){
+      // Save only the actual ticket portion, not the surrounding UI/buttons.
+      const sx=300, sy=330, sw=850, sh=585;
+      const scale=2;
+      const c=document.createElement('canvas');
+      c.width=sw*scale; c.height=sh*scale;
+      const ctx=c.getContext('2d');
+      ctx.drawImage(img,sx,sy,sw,sh,0,0,c.width,c.height);
+
+      // Cover the sample values with the ticket background and write the actual data.
+      ctx.fillStyle='#e9dff1';
+      ctx.fillRect(110*scale,395*scale,190*scale,72*scale);
+      ctx.fillRect(310*scale,395*scale,210*scale,72*scale);
+      ctx.fillRect(555*scale,395*scale,175*scale,72*scale);
+
+      ctx.fillStyle='#3f1d73';
+      ctx.textAlign='center';
+      ctx.font='bold italic 42px Georgia';
+      ctx.fillText(lastData.family,205*scale,440*scale);
+      ctx.fillText(lastData.count+' '+(lastData.count==='1'?'persona':'personas'),415*scale,440*scale);
+      ctx.fillText(lastData.number,640*scale,440*scale);
+
+      c.toBlob(function(blob){
+        const a=document.createElement('a');
+        a.href=URL.createObjectURL(blob);
+        a.download='Pase_Dayra_'+lastData.family.replace(/\s+/g,'_')+'_'+lastData.number.replace('#','')+'.png';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+        alert('Tu pase se descargó como imagen. En iPhone, toca y mantén la imagen o usa "Guardar en Fotos" si Safari lo solicita.');
+      },'image/png');
+    };
+    img.src='pase-acceso.png';
   }
 
   function whatsapp(){
     if(!lastData) return;
-    const num=document.getElementById('passNumber').textContent;
-    const msg='💜 Confirmación XV años de Dayra\\nFamilia: '+lastData.family+'\\nInvitados: '+lastData.count+'\\nPase: '+num;
-    const url='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
-    window.open(url,'_blank');
+    const msg='💜 Confirmación XV años de Dayra\nFamilia: '+lastData.family+'\nInvitados: '+lastData.count+'\nPase: '+lastData.number;
+    window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank');
   }
 
   function yes(){
@@ -497,21 +506,22 @@ document.addEventListener('DOMContentLoaded',function(){
   function no(){
     const family=prompt('Escribe el nombre de la familia:');
     if(!family || !family.trim()) return;
-    lastData={family:family.trim(),count:'0'};
+    lastData={family:family.trim(),count:'0',number:'SIN PASE'};
     document.getElementById('passFamily').textContent=lastData.family;
     document.getElementById('passGuests').textContent='No asistirá';
     document.getElementById('passNumber').textContent='SIN PASE';
-    document.getElementById('passSend').style.display='block';
+    document.getElementById('passSave').style.display='none';
     window.goToSlide(8);
   }
 
   document.addEventListener('DOMContentLoaded',function(){
-    const y=document.querySelector('.yes-hit');
-    const n=document.querySelector('.no-hit');
+    const y=document.querySelector('.yes-hit'), n=document.querySelector('.no-hit');
     if(y) y.onclick=yes;
     if(n) n.onclick=no;
-    document.getElementById('passSend').onclick=whatsapp;
-    document.getElementById('passClose').onclick=function(){window.goToSlide(7);};
+    const save=document.getElementById('passSave'), send=document.getElementById('passSend'), close=document.getElementById('passClose');
+    if(save) save.onclick=savePass;
+    if(send) send.onclick=whatsapp;
+    if(close) close.onclick=function(){window.goToSlide(7);};
   });
 })();
 </script><style id="next-all-slides-final">
