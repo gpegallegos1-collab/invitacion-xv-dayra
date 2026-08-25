@@ -213,46 +213,23 @@ background:rgba(38,20,54,.95);color:#fff;text-align:center;z-index:20}
 .yes-hit{left:6%; width:43%; bottom:5%; height:9%}
 .no-hit{right:6%; width:43%; bottom:8%; height:9%}
 </style>
-<script id="rsvp-whatsapp">
-(function(){
-  const waNumbers=['5216562661158','5216565511692'];
-  function askData(){
-    const family=prompt('Escribe el nombre de la familia:');
-    if(!family) return null;
-    const count=prompt('¿Cuántas personas asistirán?');
-    if(!count) return null;
-    return {family:family.trim(),count:count.trim()};
-  }
-  function openWA(message){
-    const encoded=encodeURIComponent(message);
-    waNumbers.forEach((n,i)=>{
-      setTimeout(()=>window.open('https://wa.me/'+n+'?text='+encoded,'_blank'),i*250);
-    });
-  }
-  function yes(){
-    const d=askData(); if(!d) return;
-    openWA('💜 Hola, confirmo mi asistencia a los XV años de Dayra.\\nFamilia: '+d.family+'\\nAsistiremos: '+d.count+' personas.');
-  }
-  function no(){
-    const family=prompt('Escribe el nombre de la familia:'); if(!family) return;
-    openWA('Hola, soy de la familia '+family.trim()+'. No podremos asistir a los XV años de Dayra.');
-  }
-  window.addEventListener('DOMContentLoaded',function(){
-    const y=document.querySelector('.yes-hit'), n=document.querySelector('.no-hit');
-    if(y){y.onclick=yes;y.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')yes();};}
-    if(n){n.onclick=no;n.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')no();};}
-  });
-})();
-</script>
+
+
 
 <style id="rsvp-final-fixed">
 #slide8{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;display:none!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;background:#180d27!important;z-index:5000!important}
 #slide8.active{display:flex!important}
-#rsvpCard{position:relative!important;width:min(66.6666667dvh,100vw)!important;height:100dvh!important;aspect-ratio:2/3!important}
+#rsvpCard{position:relative!important;width:min(66.6666667dvh,100vw)!important;height:100dvh!important;aspect-ratio:2/3!important;flex:0 0 auto!important}
 #rsvpCard>img{display:block!important;width:100%!important;height:100%!important;object-fit:fill!important}
-.rsvp-hit{position:absolute!important;display:block!important;border:0!important;background:transparent!important;cursor:pointer!important;z-index:99999!important}
-.yes-hit{left:5%;bottom:4%;width:43%;height:10%}
-.no-hit{right:5%;bottom:7%;width:43%;height:10%}
+.rsvp-hit{position:absolute!important;display:block!important;border:0!important;background:transparent!important;cursor:pointer!important;z-index:99999!important;padding:0!important;margin:0!important}
+.yes-hit{left:6%!important;top:82.2%!important;width:40%!important;height:8.2%!important}
+.no-hit{right:6%!important;top:74.5%!important;width:40%!important;height:8.2%!important}
+#waChooser{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(20,8,35,.72);z-index:20000}
+#waChooser.show{display:flex}
+#waBox{width:min(360px,86vw);padding:24px;border-radius:20px;background:#fff;text-align:center;font-family:Arial,sans-serif;box-shadow:0 12px 40px rgba(0,0,0,.35)}
+#waBox h3{margin:0 0 18px;color:#54206f;font-size:21px}
+#waBox button{display:block;width:100%;margin:10px 0;padding:13px;border:0;border-radius:12px;background:#7d4b9d;color:white;font-weight:700;font-size:16px;cursor:pointer}
+#waBox .cancel{background:#ddd;color:#333}
 </style>
 </head>
 <body>
@@ -366,26 +343,57 @@ document.addEventListener('DOMContentLoaded',function(){
   </div>
 </section>
 
-<script id="rsvp-whatsapp-fixed">
-document.addEventListener("DOMContentLoaded",function(){
-  const nums=["5216562661158","5216565511692"];
-  function send(msg){
-    const u="https://wa.me/"+nums[0]+"?text="+encodeURIComponent(msg);
-    window.open(u,"_blank");
+
+
+<div id="waChooser" aria-hidden="true">
+  <div id="waBox">
+    <h3>¿A qué WhatsApp deseas enviar la confirmación?</h3>
+    <button type="button" id="wa1">WhatsApp 1</button>
+    <button type="button" id="wa2">WhatsApp 2</button>
+    <button type="button" class="cancel" id="waCancel">Cancelar</button>
+  </div>
+</div>
+<script id="rsvp-whatsapp-final">
+(function(){
+  const nums=["526562661158","526565511692"];
+  let pendingMessage="";
+  const chooser=document.getElementById("waChooser");
+  function choose(message){
+    pendingMessage=message;
+    chooser.classList.add("show");
+    chooser.setAttribute("aria-hidden","false");
   }
-  document.querySelector(".yes-hit")?.addEventListener("click",function(){
+  function closeChooser(){
+    chooser.classList.remove("show");
+    chooser.setAttribute("aria-hidden","true");
+    pendingMessage="";
+  }
+  function openWhatsApp(n){
+    if(!pendingMessage) return;
+    const url="https://api.whatsapp.com/send?phone="+n+"&text="+encodeURIComponent(pendingMessage);
+    window.location.href=url;
+  }
+  function yes(){
     const family=prompt("Nombre de la familia:");
     if(!family) return;
     const count=prompt("Número de asistentes:");
     if(!count) return;
-    send("💜 Hola, confirmo mi asistencia a los XV años de Dayra.\nFamilia: "+family+"\nAsistiremos: "+count+" personas.");
-  });
-  document.querySelector(".no-hit")?.addEventListener("click",function(){
+    choose("💜 Hola, confirmo mi asistencia a los XV años de Dayra.\nFamilia: "+family.trim()+"\nAsistiremos: "+count.trim()+" personas.");
+  }
+  function no(){
     const family=prompt("Nombre de la familia:");
     if(!family) return;
-    send("Hola, soy de la familia "+family+". No podremos asistir a los XV años de Dayra.");
+    choose("Hola, soy de la familia "+family.trim()+". No podremos asistir a los XV años de Dayra.");
+  }
+  document.addEventListener("DOMContentLoaded",function(){
+    document.querySelector(".yes-hit")?.addEventListener("click",yes);
+    document.querySelector(".no-hit")?.addEventListener("click",no);
+    document.getElementById("wa1")?.addEventListener("click",()=>openWhatsApp(nums[0]));
+    document.getElementById("wa2")?.addEventListener("click",()=>openWhatsApp(nums[1]));
+    document.getElementById("waCancel")?.addEventListener("click",closeChooser);
+    chooser?.addEventListener("click",e=>{if(e.target===chooser) closeChooser();});
   });
-});
+})();
 </script>
 </body>
 </html>
