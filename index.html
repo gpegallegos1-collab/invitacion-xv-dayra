@@ -244,6 +244,16 @@ background:rgba(38,20,54,.95);color:#fff;text-align:center;z-index:20}
   });
 })();
 </script>
+
+<style id="rsvp-final-fixed">
+#slide8{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;display:none!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;background:#180d27!important;z-index:5000!important}
+#slide8.active{display:flex!important}
+#rsvpCard{position:relative!important;width:min(66.6666667dvh,100vw)!important;height:100dvh!important;aspect-ratio:2/3!important}
+#rsvpCard>img{display:block!important;width:100%!important;height:100%!important;object-fit:fill!important}
+.rsvp-hit{position:absolute!important;display:block!important;border:0!important;background:transparent!important;cursor:pointer!important;z-index:99999!important}
+.yes-hit{left:5%;bottom:4%;width:43%;height:10%}
+.no-hit{right:5%;bottom:7%;width:43%;height:10%}
+</style>
 </head>
 <body>
 
@@ -355,5 +365,27 @@ document.addEventListener('DOMContentLoaded',function(){
     <div class="rsvp-hit no-hit" role="button" tabindex="0" aria-label="No asistiré"></div>
   </div>
 </section>
+
+<script id="rsvp-whatsapp-fixed">
+document.addEventListener("DOMContentLoaded",function(){
+  const nums=["5216562661158","5216565511692"];
+  function send(msg){
+    const u="https://wa.me/"+nums[0]+"?text="+encodeURIComponent(msg);
+    window.open(u,"_blank");
+  }
+  document.querySelector(".yes-hit")?.addEventListener("click",function(){
+    const family=prompt("Nombre de la familia:");
+    if(!family) return;
+    const count=prompt("Número de asistentes:");
+    if(!count) return;
+    send("💜 Hola, confirmo mi asistencia a los XV años de Dayra.\nFamilia: "+family+"\nAsistiremos: "+count+" personas.");
+  });
+  document.querySelector(".no-hit")?.addEventListener("click",function(){
+    const family=prompt("Nombre de la familia:");
+    if(!family) return;
+    send("Hola, soy de la familia "+family+". No podremos asistir a los XV años de Dayra.");
+  });
+});
+</script>
 </body>
 </html>
