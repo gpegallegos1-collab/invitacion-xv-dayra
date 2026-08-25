@@ -213,37 +213,7 @@ background:rgba(38,20,54,.95);color:#fff;text-align:center;z-index:20}
 .yes-hit{left:6%; width:43%; bottom:5%; height:9%}
 .no-hit{right:6%; width:43%; bottom:8%; height:9%}
 </style>
-<script id="rsvp-whatsapp">
-(function(){
-  const waNumbers=['5216562661158','5216565511692'];
-  function askData(){
-    const family=prompt('Escribe el nombre de la familia:');
-    if(!family) return null;
-    const count=prompt('¿Cuántas personas asistirán?');
-    if(!count) return null;
-    return {family:family.trim(),count:count.trim()};
-  }
-  function openWA(message){
-    const encoded=encodeURIComponent(message);
-    waNumbers.forEach((n,i)=>{
-      setTimeout(()=>window.open('https://wa.me/'+n+'?text='+encoded,'_blank'),i*250);
-    });
-  }
-  function yes(){
-    const d=askData(); if(!d) return;
-    openWA('💜 Hola, confirmo mi asistencia a los XV años de Dayra.\\nFamilia: '+d.family+'\\nAsistiremos: '+d.count+' personas.');
-  }
-  function no(){
-    const family=prompt('Escribe el nombre de la familia:'); if(!family) return;
-    openWA('Hola, soy de la familia '+family.trim()+'. No podremos asistir a los XV años de Dayra.');
-  }
-  window.addEventListener('DOMContentLoaded',function(){
-    const y=document.querySelector('.yes-hit'), n=document.querySelector('.no-hit');
-    if(y){y.onclick=yes;y.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')yes();};}
-    if(n){n.onclick=no;n.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')no();};}
-  });
-})();
-</script>
+
 <style id="slide1-navigation-fix">
 #slide1 #next1{display:none!important;pointer-events:none!important}
 </style></head>
@@ -357,7 +327,52 @@ document.addEventListener('DOMContentLoaded',function(){
     <div class="rsvp-hit no-hit" role="button" tabindex="0" aria-label="No asistiré"></div>
   </div>
 </section>
-</body>
+<script id="rsvp-whatsapp-final">
+(function(){
+  const WA='5216562661158';
+
+  function askData(){
+    const family=prompt('Escribe el nombre de la familia:');
+    if(!family || !family.trim()) return null;
+    const count=prompt('¿Cuántas personas asistirán?');
+    if(!count || !count.trim()) return null;
+    return {family:family.trim(),count:count.trim()};
+  }
+
+  function sendWA(message){
+    const url='https://wa.me/'+WA+'?text='+encodeURIComponent(message);
+    // Use the same window to avoid browser popup blocking.
+    window.location.href=url;
+  }
+
+  function yes(){
+    const d=askData();
+    if(!d) return;
+    sendWA('💜 Hola, confirmo mi asistencia a los XV años de Dayra.\nFamilia: '+d.family+'\nAsistiremos: '+d.count+' personas.');
+  }
+
+  function no(){
+    const family=prompt('Escribe el nombre de la familia:');
+    if(!family || !family.trim()) return;
+    sendWA('Hola, soy de la familia '+family.trim()+'. No podremos asistir a los XV años de Dayra.');
+  }
+
+  function bind(){
+    const y=document.querySelector('.yes-hit');
+    const n=document.querySelector('.no-hit');
+    if(y){
+      y.onclick=yes;
+      y.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();yes();}};
+    }
+    if(n){
+      n.onclick=no;
+      n.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();no();}};
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bind);
+  else bind();
+})();
+</script></body>
 </html>
 
 <style id="urgent-functional-fix">
