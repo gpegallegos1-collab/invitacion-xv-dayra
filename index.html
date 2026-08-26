@@ -9,7 +9,8 @@
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 .slide{position:fixed;inset:0;width:100vw;height:100dvh;display:none;overflow:hidden}
 .slide.active{display:flex}
-#transition{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:#000;z-index:100;opacity:1;transition:opacity .35s ease}
+
+#transition{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:#000;z-index:100;opacity:1}
 #transition.show{display:flex}
 #transition img{width:100%;height:100%;object-fit:cover;object-position:center}
 @media (min-aspect-ratio:1/1){#transition img{object-fit:contain;background:#000}}
@@ -105,6 +106,7 @@ box-shadow:0 4px 14px rgba(0,0,0,.28);z-index:20
   <button id="next4" class="nav" type="button">Siguiente</button>
 </section>
 
+
 <div id="transition" aria-hidden="true"><img id="transitionImg" src="transicion-1.jpg" alt=""></div>
 
 <audio id="music" preload="auto" loop>
@@ -115,31 +117,41 @@ box-shadow:0 4px 14px rgba(0,0,0,.28);z-index:20
 const slides=[document.getElementById('s1'),document.getElementById('s2'),document.getElementById('s3'),document.getElementById('s4')];
 const video=document.getElementById('video');
 const music=document.getElementById('music');
+
+function showOnly(n){
+  slides.forEach((el,i)=>el.classList.toggle('active',i===n));
+}
+
 const transition=document.getElementById('transition');
 const transitionImg=document.getElementById('transitionImg');
 const transitionPhotos=['transicion-1.jpg','transicion-2.jpg','transicion-3.jpg','transicion-4.jpg'];
 let transitionIndex=0;
+let transitionBusy=false;
 
-function showOnly(n){slides.forEach((el,i)=>el.classList.toggle('active',i===n));}
-function transitionTo(n){
-  const src=transitionPhotos[transitionIndex % transitionPhotos.length];
+function transitionTo(n, after){
+  if(transitionBusy)return;
+  transitionBusy=true;
+  transitionImg.src=transitionPhotos[transitionIndex % transitionPhotos.length];
   transitionIndex++;
-  transitionImg.src=src;
   transition.classList.add('show');
   setTimeout(()=>{
     showOnly(n);
-    transition.classList.remove('show');
+    if(after) after();
+    setTimeout(()=>{ transition.classList.remove('show'); transitionBusy=false; },150);
   },1100);
 }
 
 document.getElementById('open').addEventListener('click',()=>{
+  if(transitionBusy)return;
   music.play().catch(()=>{});
   slides[0].classList.add('opening');
   setTimeout(()=>transitionTo(1),1350);
 });
 document.getElementById('next2').addEventListener('click',()=>{
-  transitionTo(2);
-  setTimeout(()=>{video.currentTime=0;video.play().catch(()=>{});},1150);
+  transitionTo(2,()=>{
+    video.currentTime=0;
+    video.play().catch(()=>{});
+  });
 });
 document.getElementById('next3').addEventListener('click',()=>{
   video.pause();
