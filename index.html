@@ -24,6 +24,7 @@ backface-visibility:hidden}
 #slide2{align-items:center;justify-content:center;background:#000}
 #slide2 img{position:absolute;inset:0;width:100vw;height:100dvh;object-fit:cover;object-position:center}
 #slide4 img{position:absolute;inset:0;width:100vw;height:100dvh;object-fit:cover;object-position:center}
+#slide4{align-items:center;justify-content:center;background:#000}
 .nav{position:absolute;z-index:50;left:50%;bottom:12px;transform:translateX(-50%);
 padding:9px 22px;border:1px solid #fff;border-radius:999px;background:rgba(74,34,96,.96);
 color:#fff;font:700 14px Arial,sans-serif;min-width:110px}
@@ -363,7 +364,7 @@ button.nav:active{
       <div><div id="seconds" class="timer-num">00</div><div class="timer-unit">SEGUNDOS</div></div>
     </div>
   </div>
-  <button type="button" id="next5" class="nav" onclick="goToSlide(6)">Siguiente</button>
+  <button type="button" id="next5" class="nav">Siguiente</button>
 </section>
 
 <section id="slide6" class="slide">
@@ -374,7 +375,7 @@ button.nav:active{
 <section id="slide7" class="slide">
   <div id="slide7Card" aria-label="Recepción"></div>
   <a id="maps6" href="https://www.google.com/maps/search/?api=1&query=Sal%C3%B3n%20de%20Eventos%20Anitas%203%2C%20C.%20Ram%C3%B3n%20Rayon%201658%2C%2032550%20Ju%C3%A1rez%2C%20Chihuahua%2C%20M%C3%A9xico" target="_blank" rel="noopener" aria-label="Abrir Google Maps"></a>
-  <button type="button" id="next7" class="nav" onclick="goToSlide(7)" aria-label="Siguiente"></button>
+  <button type="button" id="next7" class="nav" aria-label="Siguiente"></button>
 </section>
 
 <section id="slide8" class="slide">
@@ -407,11 +408,11 @@ document.addEventListener('DOMContentLoaded',function(){
   };
   document.getElementById('next2').addEventListener('click',()=>show(2));
   document.getElementById('next3').addEventListener('click',()=>show(3));
+  document.getElementById('next4').addEventListener('click',()=>show(4));
   document.getElementById('next5').addEventListener('click',()=>show(5));
   document.getElementById('next6').addEventListener('click',()=>show(6));
   document.getElementById('next7').addEventListener('click',()=>show(7));
   document.getElementById('next8').addEventListener('click',()=>show(8));
-  document.getElementById('next9').addEventListener('click',()=>show(9));
 
   // No automatic slide transition.
   video.addEventListener('ended',()=>{});
@@ -636,8 +637,7 @@ document.addEventListener('DOMContentLoaded',function(){
   text-align:center!important;
   margin:0!important;
 }
-</style></body>
-</html>
+</style>
 
 <style id="urgent-functional-fix">
 
@@ -674,3 +674,5 @@ document.addEventListener('DOMContentLoaded',function(){
 
 
 </style>
+</body>
+</html>
