@@ -335,7 +335,7 @@ button.nav:active{
 #slidePadrinos{align-items:center;justify-content:center;background:#180d27;overflow:hidden;isolation:isolate}
 #slidePadrinos::before{
   content:"";position:absolute;inset:-28px;z-index:0;
-  background-image:url("padrinos-dayra-plata-mobile.jpg");
+  background-image:url("padrinos-dayra-plata.png");
   background-size:cover;background-position:center;
   filter:blur(22px) brightness(.62);
   transform:scale(1.08);
@@ -395,7 +395,7 @@ button.nav:active{
 </section>
 
 <section id="slidePadrinos" class="slide">
-  <img src="padrinos-dayra-plata-mobile.jpg" alt="Padrinos: Andres Martinez y Rosalba Gallegos">
+  <img src="padrinos-dayra-plata.png" alt="Padrinos: Andres Martinez y Rosalba Gallegos">
   <button type="button" id="nextPadrinos" class="nav">Siguiente</button>
 </section>
 
@@ -428,7 +428,7 @@ button.nav:active{
 
 <script>
 document.addEventListener('DOMContentLoaded',function(){
-  const slides=['slide1','slide2','slide3','slide4','slide5','slidePadrinos','slideFoto3','slide6','slideFoto4','slide7','slide8','slide9','slide10'].map(id=>document.getElementById(id));
+  const slides=['slide1','slide2','slide3','slide4','slide5','slidePadrinos','slideFoto3','slide6','slideFoto4','slide7','slide8','slide9'].map(id=>document.getElementById(id));
   const video=document.getElementById('video');
   const music=document.getElementById('music');
 
@@ -490,7 +490,7 @@ document.addEventListener('DOMContentLoaded',function(){
   </div>
 </section>
 
-<section id="slide10" class="slide">
+<section id="slide10" class="slide" aria-hidden="true" style="display:none!important">
   <div id="passCard">
     <img src="pase-acceso.png" alt="Pase de acceso">
     <div id="passFamily" class="passValue"></div>
@@ -608,40 +608,26 @@ document.addEventListener('DOMContentLoaded',function(){
     const count=askGuests();
     if(!count) return;
 
-    showPass({
-      family:family,
-      count:count,
-      number:makePassNumber()
-    });
+    const msg = '💜 CONFIRMACIÓN DE ASISTENCIA — XV AÑOS DE DAYRA 💜\n\n' +
+      'Familia: '+family+'\n' +
+      'Invitados: '+count+' '+(count==='1'?'persona':'personas')+'\n\n' +
+      '¡Ahí nos vemos! 💜';
+    window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank');
   }
 
   function no(){
     const family=askFamily();
     if(!family) return;
 
-    lastData={family:family,count:'0',number:'SIN PASE'};
-    document.getElementById('passFamily').textContent=family;
-    document.getElementById('passGuests').textContent='No asistirá';
-    document.getElementById('passNumber').textContent='SIN PASE';
-    const save=document.getElementById('passSave');
-    const wa=document.getElementById('passWhatsApp');
-    if(save) save.style.display='none';
-    if(wa) wa.style.display='none';
-    window.goToSlide(11);
+    const msg='Familia: '+family+'\nNo asistiré.';
+    window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank');
   }
 
   document.addEventListener('DOMContentLoaded',function(){
     const y=document.querySelector('.yes-hit');
     const n=document.querySelector('.no-hit');
-    const wa=document.getElementById('passWhatsApp');
-    const save=document.getElementById('passSave');
-    const close=document.getElementById('passClose');
-
     if(y) y.onclick=yes;
     if(n) n.onclick=no;
-    if(wa) wa.onclick=confirmWhatsApp;
-    if(save) save.onclick=savePass;
-    if(close) close.onclick=function(){window.goToSlide(11);};
   });
 })();
 </script><style id="next-all-slides-final">
