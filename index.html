@@ -51,6 +51,12 @@ background:rgba(38,20,54,.95);color:#fff;text-align:center;z-index:20}
 .timer-unit{margin-top:2px;font:400 7px/1 Arial,sans-serif}
 #next5{bottom:7px}
 
+
+
+
+
+
+
 @media(max-width:600px){
  #slide5 .art{
    background-image:url("contador-dayra.jpg")!important;
@@ -74,6 +80,9 @@ background:rgba(38,20,54,.95);color:#fff;text-align:center;z-index:20}
  }
 }
 </style>
+
+
+
 
 <style id="slide6-final-correct">
 #slide6{
@@ -282,6 +291,69 @@ button.nav:active{
 }
 </style>
 
+<style id="dynamic-pass-style">
+#slide10{
+ position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;
+ display:none!important;align-items:center!important;justify-content:center!important;
+ overflow:hidden!important;background:#180d27!important;
+}
+#slide10.active{display:flex!important}
+#passCard{
+ position:relative!important;width:min(90.23dvh,100vw)!important;height:min(100dvh,110.83vw)!important;
+ max-width:100vw!important;max-height:100dvh!important;aspect-ratio:1191/1320!important;
+ flex:0 0 auto!important;
+}
+#passCard>img{width:100%!important;height:100%!important;display:block!important;object-fit:fill!important}
+.passValue{
+ position:absolute!important;z-index:30!important;
+ color:#3f1d73!important;font-family:Georgia,serif!important;
+ font-style:italic!important;font-weight:700!important;text-align:center!important;
+ white-space:normal!important;background:transparent!important;border:0!important;padding:0!important;
+ line-height:1.08!important;overflow-wrap:anywhere!important;
+}
+#passFamily{left:27.0%!important;top:66.0%!important;width:17.0%!important;font-size:clamp(13px,2vw,25px)!important}
+#passGuests{left:47.0%!important;top:66.0%!important;width:17.0%!important;font-size:clamp(15px,2.2vw,28px)!important}
+#passNumber{left:67.5%!important;top:66.0%!important;width:17.0%!important;font-size:clamp(16px,2.3vw,30px)!important}
+
+/* Three transparent functional hit areas over the buttons already drawn in
+   the new artwork: WhatsApp, Save, Close. */
+#passWhatsApp,#passSave,#passClose{
+ position:absolute!important;z-index:60!important;
+ padding:0!important;margin:0!important;border:0!important;outline:0!important;
+ background:transparent!important;background-image:none!important;
+ box-shadow:none!important;color:transparent!important;font-size:0!important;
+ cursor:pointer!important;appearance:none!important;-webkit-appearance:none!important;
+}
+#passWhatsApp::before,#passWhatsApp::after,#passSave::before,#passSave::after,
+#passClose::before,#passClose::after{content:none!important;display:none!important}
+#passWhatsApp{left:22%!important;top:76.0%!important;width:58%!important;height:7.2%!important}
+#passSave{left:9%!important;bottom:4.0%!important;width:37%!important;height:7.0%!important}
+#passClose{right:8%!important;bottom:4.0%!important;width:31%!important;height:7.0%!important}
+</style>
+
+<style id="slide-padrinos-responsive">
+#slidePadrinos{align-items:center;justify-content:center;background:#180d27;overflow:hidden;isolation:isolate}
+#slidePadrinos::before{
+  content:"";position:absolute;inset:-28px;z-index:0;
+  background-image:url("padrinos-dayra-plata.png");
+  background-size:cover;background-position:center;
+  filter:blur(22px) brightness(.62);
+  transform:scale(1.08);
+}
+#slidePadrinos img{
+  position:relative;z-index:1;left:auto;top:auto;transform:none;
+  width:auto;height:auto;max-width:100vw;max-height:100dvh;
+  display:block;object-fit:contain;object-position:center center;
+}
+</style>
+<style id="slide-foto3-responsive">
+#slideFoto3{align-items:center;justify-content:center;background:#000;overflow:hidden}
+#slideFoto3 img{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:auto;height:auto;max-width:100vw;max-height:100dvh;object-fit:contain;object-position:center center;background:#000}
+</style>
+<style id="slide-foto4-responsive">
+#slideFoto4{align-items:center;justify-content:center;background:#000;overflow:hidden}
+#slideFoto4 img{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:auto;height:auto;max-width:100vw;max-height:100dvh;object-fit:contain;object-position:center center;background:#000}
+</style>
 </head>
 <body>
 
@@ -323,7 +395,7 @@ button.nav:active{
 </section>
 
 <section id="slidePadrinos" class="slide">
-  <img src="padrinos-dayra.png" alt="Padrinos: Andres Martinez y Rosalba Gallegos">
+  <img src="padrinos-dayra-plata.png" alt="Padrinos: Andres Martinez y Rosalba Gallegos">
   <button type="button" id="nextPadrinos" class="nav">Siguiente</button>
 </section>
 
@@ -356,7 +428,7 @@ button.nav:active{
 
 <script>
 document.addEventListener('DOMContentLoaded',function(){
-  const slides=['slide1','slide2','slide3','slide4','slide5','slidePadrinos','slideFoto3','slide6','slideFoto4','slide7','slide8','slide9'].map(id=>document.getElementById(id));
+  const slides=['slide1','slide2','slide3','slide4','slide5','slidePadrinos','slideFoto3','slide6','slideFoto4','slide7','slide8','slide9','slide10'].map(id=>document.getElementById(id));
   const video=document.getElementById('video');
   const music=document.getElementById('music');
 
@@ -418,14 +490,21 @@ document.addEventListener('DOMContentLoaded',function(){
   </div>
 </section>
 
-<style id="reception-final-clean">
-
-
-</style>
-
-<script id="rsvp-no-pass">
+<section id="slide10" class="slide">
+  <div id="passCard">
+    <img src="pase-acceso.png" alt="Pase de acceso">
+    <div id="passFamily" class="passValue"></div>
+    <div id="passGuests" class="passValue"></div>
+    <div id="passNumber" class="passValue"></div>
+    <button id="passWhatsApp" type="button" aria-label="Confirmar por WhatsApp"></button>
+    <button id="passSave" type="button" aria-label="Guardar mi pase"></button>
+    <button id="passClose" type="button" aria-label="Cerrar y volver a la invitación"></button>
+  </div>
+</section>
+<script id="rsvp-whatsapp-final">
 (function(){
   const WA='526562661158';
+  let lastData=null;
 
   function askFamily(){
     const v=prompt('Escribe el nombre de la familia:');
@@ -443,43 +522,203 @@ document.addEventListener('DOMContentLoaded',function(){
     return String(n);
   }
 
-  function openWhatsApp(message){
-    const url='https://wa.me/'+WA+'?text='+encodeURIComponent(message);
+  function makePassNumber(){
+    return '#'+String(Math.floor(100+Math.random()*900));
+  }
+
+  function showPass(data){
+    lastData=data;
+    document.getElementById('passFamily').textContent=data.family;
+    document.getElementById('passGuests').textContent=
+      data.count+' '+(data.count==='1'?'persona':'personas');
+    document.getElementById('passNumber').textContent=data.number;
+    window.goToSlide(12);
+  }
+
+  function confirmWhatsApp(){
+    if(!lastData) return;
+
+    const msg =
+      '💜 CONFIRMACIÓN DE ASISTENCIA — XV AÑOS DE DAYRA 💜\n\n' +
+      'Familia: '+lastData.family+'\n' +
+      'Invitados: '+lastData.count+' '+(lastData.count==='1'?'persona':'personas')+'\n' +
+      'Pase número: '+lastData.number+'\n\n' +
+      '¡Ahí nos vemos! 💜\n' +
+      'Regresa a la invitación para guardar tu pase de entrada. 🎟️';
+
+    // WhatsApp opens with the confirmation prepared. The guest taps Enviar,
+    // then returns to this invitation/pase.
+    const url='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
     window.open(url,'_blank');
+  }
+
+  function buildPassBlob(data,callback){
+    const img=new Image();
+    img.onload=function(){
+      const c=document.createElement('canvas');
+      c.width=img.naturalWidth;
+      c.height=img.naturalHeight;
+      const ctx=c.getContext('2d');
+      ctx.drawImage(img,0,0);
+
+      // Clean the three dynamic data boxes of the new design.
+      ctx.fillStyle='#eee6f5';
+      ctx.fillRect(315,858,215,105);
+      ctx.fillRect(575,858,215,105);
+      ctx.fillRect(835,858,215,105);
+
+      ctx.fillStyle='#3f1d73';
+      ctx.textAlign='center';
+      ctx.textBaseline='middle';
+
+      ctx.font='bold italic 31px Georgia';
+      ctx.fillText(data.family,422,907);
+
+      ctx.font='bold 38px Georgia';
+      ctx.fillText(data.count,682,900);
+      ctx.font='bold 25px Georgia';
+      ctx.fillText(data.count==='1'?'persona':'personas',682,935);
+
+      ctx.font='bold 42px Georgia';
+      ctx.fillText(data.number,942,912);
+
+      c.toBlob(callback,'image/png');
+    };
+    img.src='pase-acceso.png';
+  }
+
+  function savePass(){
+    if(!lastData) return;
+    buildPassBlob(lastData,function(blob){
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url;
+      a.download='Pase_Dayra_'+lastData.family.replace(/\s+/g,'_')+'_'+lastData.number.replace('#','')+'.png';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function(){URL.revokeObjectURL(url);},1500);
+    });
   }
 
   function yes(){
     const family=askFamily();
     if(!family) return;
+
     const count=askGuests();
     if(!count) return;
-    openWhatsApp(
-      '💜 CONFIRMACIÓN DE ASISTENCIA — XV AÑOS DE DAYRA 💜\\n\\n' +
-      'Familia: '+family+'\\n' +
-      'Invitados: '+count+' '+(count==='1'?'persona':'personas')+'\\n\\n' +
-      '¡Ahí nos vemos! 💜'
-    );
+
+    showPass({
+      family:family,
+      count:count,
+      number:makePassNumber()
+    });
   }
 
   function no(){
     const family=askFamily();
     if(!family) return;
-    openWhatsApp(
-      '💜 XV AÑOS DE DAYRA 💜\\n\\n' +
-      'Familia: '+family+'\\n' +
-      'No podremos asistir.\\n\\n' +
-      'Gracias por la invitación. 💜'
-    );
+
+    lastData={family:family,count:'0',number:'SIN PASE'};
+    document.getElementById('passFamily').textContent=family;
+    document.getElementById('passGuests').textContent='No asistirá';
+    document.getElementById('passNumber').textContent='SIN PASE';
+    const save=document.getElementById('passSave');
+    const wa=document.getElementById('passWhatsApp');
+    if(save) save.style.display='none';
+    if(wa) wa.style.display='none';
+    window.goToSlide(11);
   }
 
   document.addEventListener('DOMContentLoaded',function(){
     const y=document.querySelector('.yes-hit');
     const n=document.querySelector('.no-hit');
+    const wa=document.getElementById('passWhatsApp');
+    const save=document.getElementById('passSave');
+    const close=document.getElementById('passClose');
+
     if(y) y.onclick=yes;
     if(n) n.onclick=no;
+    if(wa) wa.onclick=confirmWhatsApp;
+    if(save) save.onclick=savePass;
+    if(close) close.onclick=function(){window.goToSlide(11);};
   });
+})();
+</script><style id="next-all-slides-final">
+/* Botón circular Siguiente: slides 2 a 7 */
+#slide2 #next2,#slide3 #next3,#slide5 #next5,#slidePadrinos #nextPadrinos,#slideFoto3 #nextFoto3,#slide6 #next6,#slideFoto4 #nextFoto4,#slide7 #next7,#slide8 #next8{
+  position:absolute!important;
+  right:12px!important;
+  left:auto!important;
+  top:50%!important;
+  bottom:auto!important;
+  transform:translateY(-50%)!important;
+  width:52px!important;
+  height:52px!important;
+  min-width:52px!important;
+  max-width:52px!important;
+  padding:0!important;
+  margin:0!important;
+  border-radius:50%!important;
+  border:2px solid #e8e6ee!important;
+  background:linear-gradient(180deg,#7133a4 0%,#4d187d 100%)!important;
+  color:transparent!important;
+  font-size:0!important;
+  line-height:1!important;
+  box-shadow:0 3px 8px rgba(0,0,0,.32)!important;
+  z-index:999999!important;
+  display:block!important;
+  pointer-events:auto!important;
+  cursor:pointer!important;
+}
+#slide2 #next2::after,#slide3 #next3::after,#slide5 #next5::after,#slidePadrinos #nextPadrinos::after,#slideFoto3 #nextFoto3::after,
+#slide6 #next6::after,#slideFoto4 #nextFoto4::after,#slide7 #next7::after,#slide8 #next8::after{
+  content:"›"!important;
+  display:block!important;
+  color:#fff!important;
+  font-family:Arial,sans-serif!important;
+  font-size:34px!important;
+  font-weight:400!important;
+  line-height:47px!important;
+  text-align:center!important;
+  margin:0!important;
+}
+</style>
+
+<style id="urgent-functional-fix">
+
+</style>
+<script id="urgent-countdown-fix">
+(function(){
+  function initCountdown(){
+    const days=document.getElementById('days');
+    const hours=document.getElementById('hours');
+    const minutes=document.getElementById('minutes');
+    const seconds=document.getElementById('seconds');
+    if(!days||!hours||!minutes||!seconds) return;
+    const target=new Date('2026-10-17T00:00:00-06:00').getTime();
+    function tick(){
+      let x=Math.max(0,target-Date.now());
+      const d=Math.floor(x/86400000); x%=86400000;
+      const h=Math.floor(x/3600000); x%=3600000;
+      const m=Math.floor(x/60000); x%=60000;
+      const s=Math.floor(x/1000);
+      days.textContent=String(d).padStart(2,'0');
+      hours.textContent=String(h).padStart(2,'0');
+      minutes.textContent=String(m).padStart(2,'0');
+      seconds.textContent=String(s).padStart(2,'0');
+    }
+    tick();
+    setInterval(tick,1000);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initCountdown);
+  else initCountdown();
 })();
 </script>
 
+<style id="reception-final-clean">
+
+
+</style>
 </body>
 </html>
