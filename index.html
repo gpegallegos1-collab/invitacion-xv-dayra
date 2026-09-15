@@ -336,19 +336,19 @@ button.nav:active{
 
 <section id="slide2" class="slide">
   <img src="foto-transicion.jpg" alt="">
-  <button id="next2" class="nav">Siguiente</button>
+  <button id="prev2" class="nav prev" aria-label="Regresar">‹</button><button id="next2" class="nav">Siguiente</button>
 </section>
 
 <section id="slide3" class="slide">
   <video id="video" playsinline preload="auto">
     <source src="video-segunda.mp4" type="video/mp4">
   </video>
-  <button id="next3" class="nav">Siguiente</button>
+  <button id="prev3" class="nav prev" aria-label="Regresar">‹</button><button id="next3" class="nav">Siguiente</button>
 </section>
 
 <section id="slide4" class="slide">
   <img src="foto-transicion-2.jpg" alt="">
-  <button id="next4" class="nav">Siguiente</button>
+  <button id="prev4" class="nav prev" aria-label="Regresar">‹</button><button id="next4" class="nav">Siguiente</button>
 </section>
 
 <section id="slide5" class="slide">
@@ -362,38 +362,38 @@ button.nav:active{
       <div><div id="seconds" class="timer-num">00</div><div class="timer-unit">SEGUNDOS</div></div>
     </div>
   </div>
-  <button type="button" id="next5" class="nav">Siguiente</button>
+  <button type="button" id="prev5" class="nav prev" aria-label="Regresar">‹</button><button type="button" id="next5" class="nav">Siguiente</button>
 </section>
 
 <section id="slidePadrinos" class="slide">
   <img src="padrinos-dayra-plata-mobile.jpg" alt="Padrinos: Andres Martinez y Rosalba Gallegos">
-  <button type="button" id="nextPadrinos" class="nav">Siguiente</button>
+  <button type="button" id="prevPadrinos" class="nav prev" aria-label="Regresar">‹</button><button type="button" id="nextPadrinos" class="nav">Siguiente</button>
 </section>
 
 <section id="slideFoto3" class="slide">
   <img src="foto-transicion-3.jpg" alt="Dayra 15 años">
-  <button type="button" id="nextFoto3" class="nav">Siguiente</button>
+  <button type="button" id="prevFoto3" class="nav prev" aria-label="Regresar">‹</button><button type="button" id="nextFoto3" class="nav">Siguiente</button>
 </section>
 
 <section id="slide6" class="slide">
   <div id="slide6Card" aria-label="Ceremonia religiosa"></div>
   <a id="mapsLink" href="https://www.google.com/maps/search/?api=1&query=Parroquia%20San%20Judas%20Tadeo%2C%20Av.%20Valle%20de%20Juárez%207628%2C%20Frontera%2C%2032427%20Juárez%2C%20Chihuahua%2C%20México" target="_blank" rel="noopener" aria-label="Abrir Google Maps"></a>
-  <button id="next6" class="nav">Siguiente</button>
+  <button id="prev6" class="nav prev" aria-label="Regresar">‹</button><button id="next6" class="nav">Siguiente</button>
 </section>
 <section id="slideFoto4" class="slide">
   <img src="foto-dayra-4.jpeg" alt="Dayra con su pastel">
-  <button type="button" id="nextFoto4" class="nav">Siguiente</button>
+  <button type="button" id="prevFoto4" class="nav prev" aria-label="Regresar">‹</button><button type="button" id="nextFoto4" class="nav">Siguiente</button>
 </section>
 
 <section id="slide7" class="slide">
   <div id="slide7Card" aria-label="Recepción"></div>
   <a id="maps6" href="https://www.google.com/maps/search/?api=1&query=Sal%C3%B3n%20de%20Eventos%20Anitas%203%2C%20C.%20Ram%C3%B3n%20Rayon%201658%2C%2032550%20Ju%C3%A1rez%2C%20Chihuahua%2C%20M%C3%A9xico" target="_blank" rel="noopener" aria-label="Abrir Google Maps"></a>
-  <button type="button" id="next7" class="nav" aria-label="Siguiente"></button>
+  <button type="button" id="prev7" class="nav prev" aria-label="Regresar"></button><button type="button" id="next7" class="nav" aria-label="Siguiente"></button>
 </section>
 
 <section id="slide8" class="slide">
   <div id="slide8Card" aria-label="Código de vestimenta"></div>
-  <button type="button" id="next8" class="nav">Siguiente</button>
+  <button type="button" id="prev8" class="nav prev" aria-label="Regresar">‹</button><button type="button" id="next8" class="nav">Siguiente</button>
 </section>
 <audio id="music" preload="auto" loop><source src="quince-anos.mp3" type="audio/mpeg"></audio>
 
@@ -429,6 +429,8 @@ document.addEventListener('DOMContentLoaded',function(){
   document.getElementById('nextFoto4').addEventListener('click',()=>show(9));
   document.getElementById('next7').addEventListener('click',()=>show(10));
   document.getElementById('next8').addEventListener('click',()=>show(11));
+  const prevMap={prev2:1,prev3:2,prev4:3,prev5:4,prevPadrinos:5,prevFoto3:6,prev6:7,prevFoto4:8,prev7:9,prev8:10,prev9:11};
+  Object.entries(prevMap).forEach(([id,n])=>document.getElementById(id)?.addEventListener('click',()=>show(n-1)));
 
   // No automatic slide transition.
   video.addEventListener('ended',()=>{});
@@ -453,6 +455,7 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 <section id="slide9" class="slide">
+  <button type="button" id="prev9" class="nav prev" aria-label="Regresar">‹</button>
   <div id="rsvpCard" aria-label="Confirmación de asistencia">
     <img src="rsvp-confirmacion.png" alt="Confirma tu asistencia">
     <div class="rsvp-hit yes-hit" role="button" tabindex="0" aria-label="Sí, asistiré"></div>
@@ -578,5 +581,46 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 })();
 </script>
+
+<style id="previous-buttons">
+/* Botón circular Regresar: slides 2 a 9 */
+#slide2 .prev,#slide3 .prev,#slide4 .prev,#slide5 .prev,#slidePadrinos .prev,#slideFoto3 .prev,#slide6 .prev,#slideFoto4 .prev,#slide7 .prev,#slide8 .prev,#slide9 .prev{
+  position:absolute!important;
+  left:12px!important;
+  right:auto!important;
+  top:50%!important;
+  bottom:auto!important;
+  transform:translateY(-50%)!important;
+  width:52px!important;
+  height:52px!important;
+  min-width:52px!important;
+  max-width:52px!important;
+  padding:0!important;
+  margin:0!important;
+  border-radius:50%!important;
+  border:2px solid #e8e6ee!important;
+  background:linear-gradient(180deg,#7133a4 0%,#4d187d 100%)!important;
+  color:transparent!important;
+  font-size:0!important;
+  line-height:1!important;
+  box-shadow:0 3px 8px rgba(0,0,0,.32)!important;
+  z-index:999999!important;
+  display:block!important;
+  pointer-events:auto!important;
+  cursor:pointer!important;
+}
+#slide2 .prev::after,#slide3 .prev::after,#slide4 .prev::after,#slide5 .prev::after,#slidePadrinos .prev::after,#slideFoto3 .prev::after,#slide6 .prev::after,#slideFoto4 .prev::after,#slide7 .prev::after,#slide8 .prev::after,#slide9 .prev::after{
+  content:"‹"!important;
+  display:block!important;
+  color:#fff!important;
+  font-family:Arial,sans-serif!important;
+  font-size:34px!important;
+  font-weight:400!important;
+  line-height:47px!important;
+  text-align:center!important;
+  margin:0!important;
+}
+</style>
+
 </body>
 </html>
