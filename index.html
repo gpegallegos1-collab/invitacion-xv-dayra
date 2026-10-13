@@ -209,9 +209,20 @@ background:rgba(38,20,54,.95);color:#fff;text-align:center;z-index:20}
   aspect-ratio:2/3!important; flex:0 0 auto!important;
 }
 #rsvpCard img{display:block!important; width:100%!important; height:100%!important; object-fit:fill!important}
-.rsvp-hit{position:absolute!important; cursor:pointer!important; z-index:10000!important}
-.yes-hit{left:4%; width:44%; bottom:6%; height:18%;}
-.no-hit{right:4%; width:44%; bottom:6%; height:18%;}
+.rsvp-hit{display:none!important;pointer-events:none!important}
+/* Mensaje de cierre superpuesto: la imagen original se conserva sin modificar */
+.closed-message-overlay{
+  position:absolute; z-index:20; left:5%; right:5%; bottom:5%;
+  padding:clamp(12px,3.5vw,22px) clamp(12px,4vw,24px);
+  border:1px solid rgba(235,213,255,.9); border-radius:18px;
+  background:rgba(35,13,52,.91); color:#fff; text-align:center;
+  box-shadow:0 8px 28px rgba(0,0,0,.35); pointer-events:none;
+  font-family:Georgia,'Times New Roman',serif;
+}
+.closed-message-overlay .butterflies{font-size:clamp(18px,5vw,27px); margin-bottom:4px}
+.closed-message-overlay h2{font-size:clamp(18px,4.8vw,26px); line-height:1.15; margin:5px 0 10px; color:#f0dfff}
+.closed-message-overlay p{font-size:clamp(12px,3.1vw,16px); line-height:1.4; margin:7px 0}
+.closed-message-overlay .signoff{color:#e6c9ff;font-style:italic}
 </style>
 
 <style id="slide1-navigation-fix">
@@ -453,10 +464,17 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 <section id="slide9" class="slide">
-  <div id="rsvpCard" aria-label="Confirmación de asistencia">
-    <img src="rsvp-confirmacion.png" alt="Confirma tu asistencia">
-    <div class="rsvp-hit yes-hit" role="button" tabindex="0" aria-label="Sí, asistiré"></div>
-    <div class="rsvp-hit no-hit" role="button" tabindex="0" aria-label="No asistiré"></div>
+  <div id="rsvpCard" aria-label="Invitación de Dayra: confirmaciones cerradas">
+    <img src="rsvp-confirmacion.png" alt="Invitación original de confirmación de asistencia">
+    <div class="closed-message-overlay" role="status" aria-live="polite">
+      <div class="butterflies" aria-hidden="true">🦋 ✨ 🦋</div>
+      <h2>¡La magia está por comenzar!</h2>
+      <p><strong>Los XV de Dayra Lissette</strong></p>
+      <p>Una noche, mil emociones y recuerdos que durarán para siempre.</p>
+      <p>La lista de invitados ha quedado cerrada y ahora todo está listo para vivir una noche inolvidable.</p>
+      <p>Gracias por ser parte de esta historia tan especial. ¡Nos vemos en la celebración! 💜</p>
+      <p class="signoff">Con cariño, Dayra Lissette 🦋</p>
+    </div>
   </div>
 </section>
 
@@ -537,46 +555,6 @@ document.addEventListener('DOMContentLoaded',function(){
 
 </style>
 
-<script id="rsvp-no-pass">
-(function(){
-  const WA='526562661158';
-  function askFamily(){
-    const v=prompt('Escribe el nombre de la familia:');
-    return v && v.trim() ? v.trim() : null;
-  }
-  function askGuests(){
-    const v=prompt('¿Cuántas personas asistirán?');
-    if(!v || !v.trim()) return null;
-    const n=Number(v.trim());
-    if(!Number.isInteger(n) || n<1){
-      alert('Escribe una cantidad válida de invitados.');
-      return null;
-    }
-    return String(n);
-  }
-  function openWA(msg){
-    const url='https://wa.me/526562661158?text='+encodeURIComponent(msg);
-    window.location.href=url;
-  }
-  function yes(){
-    const family=askFamily();
-    if(!family) return;
-    const count=askGuests();
-    if(!count) return;
-    openWA('💜 CONFIRMACIÓN DE ASISTENCIA — XV AÑOS DE DAYRA 💜\n\nFamilia: '+family+'\nInvitados: '+count+' '+(count==='1'?'persona':'personas')+'\n\n¡Ahí nos vemos! 💜');
-  }
-  function no(){
-    const family=askFamily();
-    if(!family) return;
-    openWA('💜 XV AÑOS DE DAYRA 💜\n\nFamilia: '+family+'\nNo asistiré.');
-  }
-  document.addEventListener('DOMContentLoaded',function(){
-    const y=document.querySelector('.yes-hit');
-    const n=document.querySelector('.no-hit');
-    if(y) y.onclick=yes;
-    if(n) n.onclick=no;
-  });
-})();
-</script>
+<!-- Confirmaciones cerradas: no se solicita información ni se abre WhatsApp. -->
 </body>
 </html>
